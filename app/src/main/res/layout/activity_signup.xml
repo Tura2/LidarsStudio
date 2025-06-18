@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <!-- Back Arrow -->
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/arrow_left"
+    android:contentDescription="Back"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginTop="24dp"
+    android:layout_marginStart="8dp" />
+
+    <!-- Register Title -->
+
+    <!-- Logo -->
+
+    <TextView
+        android:id="@+id/textRegisterTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/heebo_bold"
+        android:letterSpacing="0.0125"
+        android:text="Register"
+        android:textColor="#191A1A"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.439"
+        app:layout_constraintStart_toEndOf="@id/backButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/lidar_studio_logo"
+        app:layout_constraintTop_toBottomOf="@id/textRegisterTop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- Full Name -->
+    <EditText
+        android:id="@+id/editTextFullName"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:hint="Full name"
+        android:textSize="14sp"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:inputType="textPersonName"
+        android:fontFamily="@font/heebo_regular"
+        app:layout_constraintTop_toBottomOf="@id/logoImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <!-- Email -->
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:textSize="14sp"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:inputType="textEmailAddress"
+        android:fontFamily="@font/heebo_regular"
+        app:layout_constraintTop_toBottomOf="@id/editTextFullName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp" />
+
+    <!-- Password -->
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:textSize="14sp"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:inputType="textPassword"
+        android:fontFamily="@font/heebo_regular"
+        app:layout_constraintTop_toBottomOf="@id/editTextEmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp" />
+
+    <!-- Phone Number with +972 hint -->
+    <EditText
+        android:id="@+id/editTextPhone"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:hint="Phone number (e.g. +972 50 1234567)"
+        android:textSize="14sp"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:inputType="phone"
+        android:fontFamily="@font/heebo_regular"
+        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp" />
+
+    <!-- Date of Birth -->
+    <EditText
+        android:id="@+id/editTextDob"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:hint="Date of birth"
+        android:textSize="14sp"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:focusable="false"
+        android:inputType="none"
+        android:fontFamily="@font/heebo_regular"
+        app:layout_constraintTop_toBottomOf="@id/editTextPhone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp" />
+
+    <!-- Sign Up Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonSignUp"
+        style="@style/PrimaryButton"
+        android:text="Sign up"
+        app:layout_constraintTop_toBottomOf="@id/editTextDob"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <!-- Already have an account? -->
+    <TextView
+        android:id="@+id/textLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Already have an account? Log in"
+        android:textColor="#888888"
+        android:textSize="14sp"
+        android:letterSpacing="0.0125"
+        android:fontFamily="@font/heebo_regular"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/buttonSignUp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

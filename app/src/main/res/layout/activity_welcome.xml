@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Background Image -->
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/lidar_welcome" />
+
+
+    <!-- Bottom content area -->
+    <LinearLayout
+        android:id="@+id/contentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        android:gravity="center_horizontal">
+
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="108dp"
+            android:layout_height="101dp"
+            android:src="@drawable/lidar_studio_logo"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to"
+            android:textAlignment="center"
+            android:textColor="#191A1A"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:fontFamily="@font/heebo_bold"
+            android:letterSpacing="0.011"/>
+
+        <TextView
+            android:id="@+id/subTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lidar's Studio"
+            android:textAlignment="center"
+            android:textColor="#191A1A"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:fontFamily="@font/heebo_bold"
+            android:letterSpacing="0.011"
+            android:layout_marginBottom="24dp" />
+
+
+        <!-- Subtitle -->
+        <TextView
+            android:id="@+id/subtitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Book your next appointment – tattoo or gel nails – in just a few taps."
+            android:textAlignment="center"
+            android:textColor="#888888"
+            android:textSize="14sp"
+            android:fontFamily="@font/heebo_regular"
+            android:lineSpacingExtra="6dp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Primary Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonLogin"
+            style="@style/PrimaryButton"
+            android:text="Log in" />
+
+        <!-- Secondary Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonRegister"
+            style="@style/SecondaryButton"
+            android:text="Register" />
+    </LinearLayout>
+</RelativeLayout>
