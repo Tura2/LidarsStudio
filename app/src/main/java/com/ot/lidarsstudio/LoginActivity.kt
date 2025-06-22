@@ -26,7 +26,6 @@ class LoginActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.buttonLogin)
         val signupTextView = findViewById<TextView>(R.id.textSignup)
 
-        // עיצוב הטקסט "Don't have an account? Register now"
         val fullText = "Don't have an account? Register now"
         val spannable = SpannableString(fullText)
 
@@ -52,6 +51,15 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
             }
         }, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        loginButton.setOnClickListener {
+            // TODO: Add real validation if needed
+            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+            intent.putExtra("userName", "Lidar") // optional: pass real name from Firebase later
+            startActivity(intent)
+            finish() // optional: prevent going back to login screen with back button
+        }
+
 
         signupTextView.text = spannable
         signupTextView.movementMethod = LinkMovementMethod.getInstance()
