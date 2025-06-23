@@ -1,5 +1,6 @@
 package com.ot.lidarsstudio
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -7,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.ot.lidarsstudio.adapters.PhotoAdapter
 import com.ot.lidarsstudio.utils.ImageFade
 
@@ -32,6 +34,12 @@ class HomeActivity : AppCompatActivity() {
 
         val name = intent.getStringExtra("userName") ?: "there"
         textWelcome.text = "Hey $name, happy to have you back"
+
+        val buttonMakeAppointment = findViewById<MaterialButton>(R.id.buttonMakeAppointment)
+        buttonMakeAppointment.setOnClickListener {
+            val intent = Intent(this, BookAppointmentActivity::class.java)
+            startActivity(intent)
+        }
 
         // Start fading images
         ImageFade.start(imageSlider, sliderImages, 3000)

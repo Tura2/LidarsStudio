@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="primaryColor">#997e7b</color>
+    <!-- ⚫ Base Colors -->
+    <color name="black">#191A1A</color> <!-- Dark text color -->
+    <color name="white">#FFFFFFFF</color> <!-- Text or icon on dark background -->
 
+    <!-- 🎨 Theme Colors -->
+    <color name="primaryColor">#997E7B</color> <!-- Main branding color -->
+    <color name="secondaryColor">#191A1A</color> <!-- Text headers -->
+    <color name="accentColor">#888888</color> <!-- Subtext or hint -->
+    <color name="backgroundColor">#F5F5F5</color> <!-- General background -->
+    <color name="buttonTextColor">#FFFFFF</color> <!-- Text inside primary buttons -->
+
+    <!-- 🖼️ UI Specifics -->
+    <color name="outlineColor">#997E7B</color> <!-- Border of secondary buttons -->
+    <color name="inputBackground">#FFFFFF</color> <!-- For EditText -->
+    <color name="disabledColor">#D3CFCF</color> <!-- Disabled button state -->
+    <color name="selectedButtonBackground">#191A1A</color> <!-- When button selected -->
+    <color name="selectedButtonTextColor">#FFFFFF</color> <!-- Selected button text -->
+    <color name="gray">#AAAAAA</color>
+    <color name="brown">#997e7b</color>  <!-- לווידוא כשמוגדר stroke -->
 </resources>

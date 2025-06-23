@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundColor"
+    android:padding="24dp">
+
+    <!-- ❌ כפתור סגירה -->
+    <ImageButton
+        android:id="@+id/btnCloseConfirmation"
+        style="@style/CloseIconButton"
+        android:src="@drawable/ic_close"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- כותרת -->
+    <TextView
+        android:id="@+id/textConfirmTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="For confirmation and booking of the appointment"
+        android:textColor="@color/secondaryColor"
+        android:textSize="18sp"
+        android:fontFamily="@font/heebo_bold"
+        app:layout_constraintTop_toBottomOf="@id/btnCloseConfirmation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- פרטי תור -->
+    <TextView
+        android:id="@+id/textAppointmentDetails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Service: Gel with art\nDate: 26.6\nHour: 10:00"
+        android:textColor="@color/primaryColor"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/heebo_medium"
+        app:layout_constraintTop_toBottomOf="@id/textConfirmTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- כפתור אישור -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnConfirmAppointment"
+        style="@style/PrimaryButton"
+        android:text="Confirm Appointment"
+        app:layout_constraintTop_toBottomOf="@id/textAppointmentDetails"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
