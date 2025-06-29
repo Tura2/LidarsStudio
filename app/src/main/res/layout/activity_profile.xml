@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="@color/white">
+
+    <!-- לוגו -->
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/lidar_studio_logo"
+        android:contentDescription="Logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- שם משתמש -->
+    <TextView
+        android:id="@+id/textUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lidar Levi"
+        android:textSize="22sp"
+        android:textColor="@color/primaryColor"
+        android:fontFamily="@font/heebo_bold"
+        app:layout_constraintTop_toBottomOf="@id/logoImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp" />
+
+    <!-- "Details" -->
+    <TextView
+        android:id="@+id/textDetailsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Details"
+        android:textColor="@color/secondaryColor"
+        android:textSize="16sp"
+        android:fontFamily="@font/heebo_medium"
+        app:layout_constraintTop_toBottomOf="@id/textUserName"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <!-- אזור פרטי משתמש -->
+    <LinearLayout
+        android:id="@+id/userDetailsLayout"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/textDetailsLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/textUserEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="lidar@example.com"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/heebo_regular" />
+
+        <TextView
+            android:id="@+id/textUserPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+972-54-0000000"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/heebo_regular"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/textUserBirth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="03/04/1997"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/heebo_regular"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <!-- כפתור עריכה -->
+    <ImageButton
+        android:id="@+id/buttonEditProfile"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_edit"
+        android:scaleType="fitCenter"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="@color/secondaryColor"
+        app:layout_constraintTop_toTopOf="@id/textDetailsLabel"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Toggle בין סוגי התורים -->
+    <LinearLayout
+        android:id="@+id/toggleButtonsLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/userDetailsLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/buttonToggleUpcoming"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Upcoming Appointment"
+            android:paddingVertical="8dp"
+            android:layout_marginRight="4dp"
+            android:textSize="12sp"
+            android:backgroundTint="@color/primaryColor"
+            android:textColor="@color/white"
+            android:fontFamily="@font/heebo_medium" />
+
+        <Button
+            android:id="@+id/buttonToggleHistory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Appointment History"
+            android:paddingVertical="8dp"
+            android:textSize="12sp"
+            android:backgroundTint="@color/primaryColor"
+            android:textColor="@color/white"
+            android:fontFamily="@font/heebo_medium" />
+    </LinearLayout>
+
+    <!-- תוכן דינמי שמתחלף -->
+    <FrameLayout
+        android:id="@+id/appointmentContentContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toggleButtonsLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
