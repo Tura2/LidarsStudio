@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF8F2"
+    android:padding="24dp">
+
+    <!-- כותרת גרפית -->
+    <ImageView
+        android:id="@+id/imagePriceListBanner"
+        android:layout_width="348dp"
+        android:layout_height="99dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/price_list_photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- ScrollView לכל התוכן -->
+    <ScrollView
+        android:id="@+id/scrollViewContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/imagePriceListBanner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/socialIcons">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- NAILS -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NAILS"
+                android:textSize="18sp"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/heebo_bold"
+                android:layout_marginTop="16dp" />
+
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="מניקור ולק ג'ל - 130₪"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"/>
+
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="מניקור ולק ג'ל + מבנה אנטומי - 150₪"
+                android:textSize="14sp"
+                android:layout_marginTop="2dp"/>
+
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="בנייה חדשה בפוליג'ל - 300₪"
+                android:textSize="14sp"
+                android:layout_marginTop="2dp"/>
+
+            <!-- EXTRAS -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EXTRAS"
+                android:textSize="18sp"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/heebo_bold"
+                android:layout_marginTop="24dp" />
+
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="פרנץ' - 10₪"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"/>
+
+
+
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="אבקה - 10₪"
+                android:textSize="14sp"/>
+
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ציורים בכחול - 20–100₪"
+                android:textSize="14sp"/>
+
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="תיקון ציפורן שבורה - 10₪"
+                android:textSize="14sp"/>
+
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="השלמת ציפורן שבורה - 20₪"
+                android:textSize="14sp"/>
+
+            <!-- EYEBROWS -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EYEBROWS"
+                android:textSize="18sp"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/heebo_bold"
+                android:layout_marginTop="24dp" />
+
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="עיצוב גבות - 80₪"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"/>
+
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="שפם - 20₪"
+                android:textSize="14sp"/>
+
+            <!-- TATTOOS -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TATTOOS"
+                android:textSize="18sp"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/heebo_bold"
+                android:layout_marginTop="24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact me for more information"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/heebo_regular" />
+        </LinearLayout>
+    </ScrollView>
+
+
+    <!-- אזור רשתות חברתיות -->
+    <LinearLayout
+        android:id="@+id/socialIcons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnWhatsapp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_whatsapp" />
+
+        <ImageButton
+            android:id="@+id/btnInstagram"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_instagram" />
+
+        <ImageButton
+            android:id="@+id/btnFacebook"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_facebook" />
+
+        <ImageButton
+            android:id="@+id/btnTiktok"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_tiktok" />
+
+        <ImageButton
+            android:id="@+id/btnAccessibility"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_accessibility" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
