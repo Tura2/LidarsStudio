@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1027469869233",
+    "project_id": "lidarsstudio",
+    "storage_bucket": "lidarsstudio.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027469869233:android:1ca324df6b7b468b90e290",
+        "android_client_info": {
+          "package_name": "com.ot.lidarsstudio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWC4Clou93sh7YcM3WuC_3ZZE6lq2aKjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

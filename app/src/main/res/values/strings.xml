@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LidarsStudio</string>
+    <string name="gallery_image">Gallery Image</string>
 </resources>

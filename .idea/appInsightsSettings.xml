@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.ot.lidarsstudio" />
+                  <option name="mobileSdkAppId" value="1:1027469869233:android:1ca324df6b7b468b90e290" />
+                  <option name="projectId" value="lidarsstudio" />
+                  <option name="projectNumber" value="1027469869233" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
