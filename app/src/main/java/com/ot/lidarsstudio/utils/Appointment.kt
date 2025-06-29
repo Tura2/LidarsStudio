@@ -1,7 +1,10 @@
-package com.ot.lidarsstudio.utils
+package com.ot.lidarsstudio.models
+
+import com.google.firebase.Timestamp
 
 data class Appointment(
+    val docId: String,
     val service: String,
-    val date: String,
-    val hour: String
+    val dateTime: Timestamp,
+    var status: String
 )
