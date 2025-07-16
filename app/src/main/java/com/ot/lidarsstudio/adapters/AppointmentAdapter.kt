@@ -11,18 +11,23 @@ import com.ot.lidarsstudio.utils.Appointment
 
 class AppointmentAdapter(
     private val items: MutableList<Appointment>,
+    private val isManager: Boolean, // פרמטר חדש
     private val onCancel: (Appointment) -> Unit,
-    private val onConfirm: (Appointment) -> Unit
+    private val onComplete: (Appointment) -> Unit
 ) : RecyclerView.Adapter<AppointmentAdapter.VH>() {
 
     inner class VH(item: View) : RecyclerView.ViewHolder(item) {
         val textDetails: TextView = item.findViewById(R.id.textAppointmentItem)
-        val btnAction: Button = item.findViewById(R.id.buttonAppointmentAction)
+        val btnCancel: Button = item.findViewById(R.id.buttonCancel)
+        val btnComplete: Button? = item.findViewById(R.id.buttonComplete) // אופציונלי, ייתכן ונוסיף לitem layout
+        val textPhone: TextView? = item.findViewById(R.id.textPhone) // ייתכן ונוסיף לitem layout
+        val textName: TextView? = item.findViewById(R.id.textName)   // הוסף TextView לשם מלא
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+        val layoutId = if (isManager) R.layout.item_appointment_manager else R.layout.item_appointment_customer
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_appointment, parent, false)
+            .inflate(layoutId, parent, false)
         return VH(v)
     }
 
@@ -31,7 +36,6 @@ class AppointmentAdapter(
     override fun onBindViewHolder(holder: VH, pos: Int) {
         val appt = items[pos]
 
-        // עיבוד משך זמן יפה לקריאה
         val durationStr = if (appt.durationMinutes >= 60) {
             val hours = appt.durationMinutes / 60
             val minutes = appt.durationMinutes % 60
@@ -40,27 +44,38 @@ class AppointmentAdapter(
             "${appt.durationMinutes} min"
         }
 
-        // בניית טקסט
-        holder.textDetails.text = """
+        val baseText = """
             ${appt.service}
             ${appt.date} at ${appt.startHour}
             Duration: $durationStr
             Status: ${appt.status}
         """.trimIndent()
 
-        // כפתור פעולה
-        holder.btnAction.visibility = View.VISIBLE
-        when (appt.status) {
-            "pending" -> {
-                holder.btnAction.text = "Confirm"
-                holder.btnAction.setOnClickListener { onConfirm(appt) }
+        if (isManager) {
+            // הצג שם מלא וטלופון במנהל
+            val phoneText = appt.phone ?: "No phone"
+            val nameText = appt.fullName ?: "No name"
+            holder.textPhone?.text = phoneText
+            holder.textName?.text = nameText
+            holder.textDetails.text = baseText
+
+            if (appt.status == "completed") {
+                holder.btnCancel.visibility = View.GONE
+                holder.btnComplete?.visibility = View.GONE
+            } else {
+                holder.btnCancel.visibility = View.VISIBLE
+                holder.btnComplete?.visibility = View.VISIBLE
+                holder.btnCancel.setOnClickListener { onCancel(appt) }
+                holder.btnComplete?.setOnClickListener { onComplete(appt) }
             }
-            "scheduled" -> {
-                holder.btnAction.text = "Cancel"
-                holder.btnAction.setOnClickListener { onCancel(appt) }
-            }
-            else -> {
-                holder.btnAction.visibility = View.GONE
+        } else {
+            holder.textDetails.text = baseText
+
+            if (appt.status == "completed") {
+                holder.btnCancel.visibility = View.GONE
+            } else {
+                holder.btnCancel.visibility = View.VISIBLE
+                holder.btnCancel.setOnClickListener { onCancel(appt) }
             }
         }
     }

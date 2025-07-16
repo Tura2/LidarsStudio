@@ -10,10 +10,11 @@
         android:textColor="#191A1A" />
 
     <Button
-        android:id="@+id/buttonAppointmentAction"
+        android:id="@+id/buttonCancel"
         style="@style/PrimaryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Cancel"
         android:layout_gravity="end"
         android:layout_marginTop="8dp" />
 </LinearLayout>

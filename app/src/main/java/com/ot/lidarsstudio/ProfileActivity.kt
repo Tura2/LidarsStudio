@@ -2,6 +2,7 @@ package com.ot.lidarsstudio
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -12,6 +13,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ot.lidarsstudio.adapters.AppointmentAdapter
 import com.ot.lidarsstudio.utils.Appointment
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -31,11 +34,12 @@ class ProfileActivity : AppCompatActivity() {
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
+    private var isManager = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        // bind views
         textUserName = findViewById(R.id.textUserName)
         textUserEmail = findViewById(R.id.textUserEmail)
         textUserPhone = findViewById(R.id.textUserPhone)
@@ -49,28 +53,39 @@ class ProfileActivity : AppCompatActivity() {
 
         buttonAddAppointments.visibility = View.GONE
 
-        // Load profile
         auth.currentUser?.let { user ->
             db.collection("users").document(user.uid).get()
                 .addOnSuccessListener { doc ->
+                    Log.d("ProfileActivity", "User document loaded: $doc")
                     textUserName.text = doc.getString("fullName") ?: ""
                     textUserEmail.text = doc.getString("email") ?: ""
                     textUserPhone.text = doc.getString("phone") ?: ""
                     textUserBirth.text = doc.getString("dob") ?: ""
 
                     val email = doc.getString("email") ?: ""
-                    if (email == "lidar@example.com") {
+                    val role = doc.getString("role") ?: ""
+
+                    isManager = email == "lidar@example.com" || role == "manager"
+
+                    Log.d("ProfileActivity", "Is Manager? $isManager")
+
+                    if (isManager) {
                         buttonAddAppointments.visibility = View.VISIBLE
+                        textUserName.text = "${textUserName.text} (Manager)"
                     }
+
+                    showUpcomingAppointment()
+                    buttonToggleUpcoming.isEnabled = false
+                    buttonToggleHistory.isEnabled = true
+                }
+                .addOnFailureListener { e ->
+                    Log.e("ProfileActivity", "Failed to load user document", e)
                 }
         }
 
         buttonAddAppointments.setOnClickListener {
             startActivity(Intent(this, AddAvailableAppointmentsActivity::class.java))
         }
-
-        showUpcomingAppointment()
-        buttonToggleUpcoming.isEnabled = false
 
         buttonToggleUpcoming.setOnClickListener {
             showUpcomingAppointment()
@@ -90,6 +105,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun showUpcomingAppointment() {
+        Log.d("ProfileActivity", "Loading upcoming appointments")
         appointmentContainer.removeAllViews()
         val view = inflater.inflate(R.layout.layout_upcoming_appointment, appointmentContainer, false)
         appointmentContainer.addView(view)
@@ -97,32 +113,56 @@ class ProfileActivity : AppCompatActivity() {
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerAppointments)
         recycler.layoutManager = LinearLayoutManager(this)
 
-        val userId = auth.currentUser?.uid ?: return
         val appointments = mutableListOf<Appointment>()
 
         val adapter = AppointmentAdapter(
             appointments,
+            isManager,
             onCancel = { appt -> cancelAppointment(appt) },
-            onConfirm = { appt -> confirmAppointment(appt) }
+            onComplete = { appt -> completeAppointment(appt) }
         )
+
         recycler.adapter = adapter
 
-        db.collection("appointments")
-            .document(userId)
-            .collection("userAppointments")
-            .whereEqualTo("status", "scheduled")
-            .get()
-            .addOnSuccessListener { result ->
+        if (isManager) {
+            getScheduledAppointmentsForNextWeek { appts ->
+                Log.d("ProfileActivity", "Manager upcoming appointments loaded: ${appts.size}")
                 appointments.clear()
-                for (doc in result.documents) {
-                    val appt = doc.toObject(Appointment::class.java)?.copy(id = doc.id)
-                    if (appt != null) appointments.add(appt)
-                }
+                // כאן עידכון: ודא ש־fullName נטען מהמסמכים
+                appointments.addAll(appts)
                 adapter.notifyDataSetChanged()
             }
+        } else {
+            val userDocId = "${textUserName.text}_${textUserPhone.text}".replace(" ", "_")
+            Log.d("ProfileActivity", "Customer userDocId for appointments: $userDocId")
+
+            db.collection("appointments")
+                .document(userDocId)
+                .collection("userAppointments")
+                .whereEqualTo("status", "scheduled")
+                .get()
+                .addOnSuccessListener { result ->
+                    Log.d("ProfileActivity", "Customer upcoming appointments loaded: ${result.size()}")
+                    appointments.clear()
+                    for (doc in result.documents) {
+                        Log.d("ProfileActivity", "Appointment doc: ${doc.id} data: ${doc.data}")
+                        val appt = doc.toObject(Appointment::class.java)?.copy(
+                            id = doc.id,
+                            userId = userDocId,
+                            fullName = doc.getString("fullName") ?: "" // טוען את השם המלא
+                        )
+                        if (appt != null) appointments.add(appt)
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+                .addOnFailureListener { e ->
+                    Log.e("ProfileActivity", "Failed to load upcoming appointments", e)
+                }
+        }
     }
 
     private fun showAppointmentHistory() {
+        Log.d("ProfileActivity", "Loading appointment history")
         appointmentContainer.removeAllViews()
         val view = inflater.inflate(R.layout.layout_appointment_history, appointmentContainer, false)
         appointmentContainer.addView(view)
@@ -130,48 +170,162 @@ class ProfileActivity : AppCompatActivity() {
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerAppointments)
         recycler.layoutManager = LinearLayoutManager(this)
 
-        val userId = auth.currentUser?.uid ?: return
         val appointments = mutableListOf<Appointment>()
 
         val adapter = AppointmentAdapter(
             appointments,
-            onCancel = {},  // לא נדרש היסטורית
-            onConfirm = {}  // לא נדרש היסטורית
+            isManager,
+            onCancel = { appt -> cancelAppointment(appt) },
+            onComplete = { appt -> completeAppointment(appt) }
         )
+
         recycler.adapter = adapter
 
-        db.collection("appointments")
-            .document(userId)
-            .collection("userAppointments")
-            .whereEqualTo("status", "past")
-            .get()
-            .addOnSuccessListener { result ->
+        if (isManager) {
+            getCompletedAppointmentsLastWeek { appts ->
+                Log.d("ProfileActivity", "Manager completed appointments loaded: ${appts.size}")
                 appointments.clear()
-                for (doc in result.documents) {
-                    val appt = doc.toObject(Appointment::class.java)?.copy(id = doc.id)
-                    if (appt != null) appointments.add(appt)
-                }
+                appointments.addAll(appts)
                 adapter.notifyDataSetChanged()
             }
+        } else {
+            val userDocId = "${textUserName.text}_${textUserPhone.text}".replace(" ", "_")
+            Log.d("ProfileActivity", "Customer userDocId for completed appointments: $userDocId")
+
+            db.collection("appointments")
+                .document(userDocId)
+                .collection("userAppointments")
+                .whereEqualTo("status", "completed")
+                .get()
+                .addOnSuccessListener { result ->
+                    Log.d("ProfileActivity", "Customer completed appointments loaded: ${result.size()}")
+                    appointments.clear()
+                    for (doc in result.documents) {
+                        Log.d("ProfileActivity", "Appointment doc: ${doc.id} data: ${doc.data}")
+                        val appt = doc.toObject(Appointment::class.java)?.copy(
+                            id = doc.id,
+                            userId = userDocId,
+                            fullName = doc.getString("fullName") ?: "" // טוען את השם המלא
+                        )
+                        if (appt != null) appointments.add(appt)
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+                .addOnFailureListener { e ->
+                    Log.e("ProfileActivity", "Failed to load completed appointments", e)
+                }
+        }
     }
 
     private fun cancelAppointment(appt: Appointment) {
-        val userId = auth.currentUser?.uid ?: return
+        val userId = appt.userId ?: run {
+            Log.e("ProfileActivity", "No userId in appointment to cancel")
+            return
+        }
         db.collection("appointments")
             .document(userId)
             .collection("userAppointments")
             .document(appt.id)
             .update("status", "cancelled")
-            .addOnSuccessListener { showUpcomingAppointment() }
+            .addOnSuccessListener {
+                Log.d("ProfileActivity", "Appointment cancelled: ${appt.id}")
+                showUpcomingAppointment()
+            }
+            .addOnFailureListener { e ->
+                Log.e("ProfileActivity", "Failed to cancel appointment", e)
+            }
     }
 
-    private fun confirmAppointment(appt: Appointment) {
-        val userId = auth.currentUser?.uid ?: return
+    private fun completeAppointment(appt: Appointment) {
+        val userId = appt.userId ?: run {
+            Log.e("ProfileActivity", "No userId in appointment to complete")
+            return
+        }
         db.collection("appointments")
             .document(userId)
             .collection("userAppointments")
             .document(appt.id)
-            .update("status", "scheduled")
-            .addOnSuccessListener { showUpcomingAppointment() }
+            .update("status", "completed")
+            .addOnSuccessListener {
+                Log.d("ProfileActivity", "Appointment completed: ${appt.id}")
+                showUpcomingAppointment()
+            }
+            .addOnFailureListener { e ->
+                Log.e("ProfileActivity", "Failed to complete appointment", e)
+            }
+    }
+
+    // השאר פונקציות ההבאה ללא שינוי כי הן כבר מחזירות Appointment עם fullName
+
+    private fun getScheduledAppointmentsForNextWeek(onResult: (List<Appointment>) -> Unit) {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        val today = sdf.format(calendar.time)
+        calendar.add(Calendar.DAY_OF_YEAR, 7)
+        val nextWeek = sdf.format(calendar.time)
+
+        Log.d("ProfileActivity", "Fetching scheduled appointments from $today to $nextWeek")
+
+        db.collectionGroup("userAppointments")
+            .whereEqualTo("status", "scheduled")
+            .whereGreaterThanOrEqualTo("date", today)
+            .whereLessThanOrEqualTo("date", nextWeek)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                Log.d("ProfileActivity", "Scheduled appointments fetched: ${querySnapshot.size()}")
+                val appointments = mutableListOf<Appointment>()
+                for (doc in querySnapshot.documents) {
+                    val userId = doc.reference.parent.parent?.id ?: ""
+                    val appt = doc.toObject(Appointment::class.java)?.copy(
+                        id = doc.id,
+                        userId = userId
+                        // fullName נטען ישירות דרך toObject
+                    )
+                    if (appt != null) {
+                        appointments.add(appt)
+                    }
+                }
+                onResult(appointments)
+            }
+            .addOnFailureListener { e ->
+                Log.e("ProfileActivity", "Failed to fetch scheduled appointments", e)
+                onResult(emptyList())
+            }
+    }
+
+    private fun getCompletedAppointmentsLastWeek(onResult: (List<Appointment>) -> Unit) {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, -7)
+        val lastWeek = sdf.format(calendar.time)
+        val today = sdf.format(Calendar.getInstance().time)
+
+        Log.d("ProfileActivity", "Fetching completed appointments from $lastWeek to $today")
+
+        db.collectionGroup("userAppointments")
+            .whereEqualTo("status", "completed")
+            .whereGreaterThanOrEqualTo("date", lastWeek)
+            .whereLessThanOrEqualTo("date", today)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                Log.d("ProfileActivity", "Completed appointments fetched: ${querySnapshot.size()}")
+                val appointments = mutableListOf<Appointment>()
+                for (doc in querySnapshot.documents) {
+                    val userId = doc.reference.parent.parent?.id ?: ""
+                    val appt = doc.toObject(Appointment::class.java)?.copy(
+                        id = doc.id,
+                        userId = userId
+                        // fullName נטען ישירות דרך toObject
+                    )
+                    if (appt != null) {
+                        appointments.add(appt)
+                    }
+                }
+                onResult(appointments)
+            }
+            .addOnFailureListener { e ->
+                Log.e("ProfileActivity", "Failed to fetch completed appointments", e)
+                onResult(emptyList())
+            }
     }
 }

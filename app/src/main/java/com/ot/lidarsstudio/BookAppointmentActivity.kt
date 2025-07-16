@@ -258,21 +258,49 @@ class BookAppointmentActivity : AppCompatActivity() {
     }
 
     private fun saveAppointmentToFirestore(appt: Appointment) {
-        val userId = auth.currentUser?.uid ?: return
-        val docRef =
-            db.collection("appointments").document(userId).collection("userAppointments").document()
+        val user = auth.currentUser ?: return
+        val userId = user.uid
 
-        val appointmentWithId = appt.copy(id = docRef.id)
+        db.collection("users").document(userId).get()
+            .addOnSuccessListener { document ->
+                val name = document.getString("fullName") ?: "Unknown"
+                val phone = document.getString("phone") ?: "0000000000"
 
-        docRef.set(appointmentWithId)
-            .addOnSuccessListener {
-                confirmedAppointment = appointmentWithId
-                pendingAppointment = null
-                removeFromAvailableAppointments(appt.date, appt.startHour, appt.durationMinutes)
-                updateAppointmentViews()
-                Toast.makeText(this, "Appointment confirmed!", Toast.LENGTH_SHORT).show()
+                val userDocId = "${name}_${phone}".replace(" ", "_")
+                val appointmentId = "${appt.date}_${appt.startHour}".replace(" ", "_")
+
+                val docRef = db.collection("appointments")
+                    .document(userDocId)
+                    .collection("userAppointments")
+                    .document(appointmentId)
+
+                val appointmentWithId = appt.copy(
+                    id = appointmentId,
+                    userId = userId,
+                    phone = phone,
+                    fullName = name
+                )
+
+                docRef.set(appointmentWithId)
+                    .addOnSuccessListener {
+                        confirmedAppointment = appointmentWithId
+                        pendingAppointment = null
+                        removeFromAvailableAppointments(appt.date, appt.startHour, appt.durationMinutes)
+                        updateAppointmentViews()
+                        Toast.makeText(this, "Appointment confirmed!", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Failed to save appointment", Toast.LENGTH_SHORT).show()
+                    }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to retrieve user info", Toast.LENGTH_SHORT).show()
             }
     }
+
+
+
+
 
     private fun removeFromAvailableAppointments(date: String, startHour: String, duration: Int) {
         val format = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -299,20 +327,31 @@ class BookAppointmentActivity : AppCompatActivity() {
             }
     }
 
-
-
     private fun cancelAppointment(appt: Appointment) {
-        val userId = auth.currentUser?.uid ?: return
-        db.collection("appointments").document(userId)
-            .collection("userAppointments").document(appt.id)
-            .delete()
-            .addOnSuccessListener {
-                confirmedAppointment = null
-                restoreAvailableAppointments(appt.date, appt.startHour, appt.durationMinutes)
-                updateAppointmentViews()
-                Toast.makeText(this, "Appointment cancelled.", Toast.LENGTH_SHORT).show()
+        val user = auth.currentUser ?: return
+        val userId = user.uid
+
+        db.collection("users").document(userId).get()
+            .addOnSuccessListener { document ->
+                val name = document.getString("fullName") ?: "Unknown"
+                val phone = document.getString("phone") ?: "0000000000"
+                val userDocId = "${name}_${phone}".replace(" ", "_")
+
+                db.collection("appointments").document(userDocId)
+                    .collection("userAppointments")
+                    .document(appt.id)
+                    .delete()
+                    .addOnSuccessListener {
+                        confirmedAppointment = null
+                        restoreAvailableAppointments(appt.date, appt.startHour, appt.durationMinutes)
+                        updateAppointmentViews()
+                        Toast.makeText(this, "Appointment cancelled.", Toast.LENGTH_SHORT).show()
+                    }
             }
     }
+
+
+
 
     private fun restoreAvailableAppointments(date: String, startHour: String, duration: Int) {
         val format = SimpleDateFormat("HH:mm", Locale.getDefault())
