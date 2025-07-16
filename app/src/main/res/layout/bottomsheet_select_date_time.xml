@@ -68,7 +68,7 @@
     <ScrollView
         android:id="@+id/scrollHours"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:visibility="gone"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="24dp"

@@ -8,6 +8,9 @@ android {
     namespace = "com.ot.lidarsstudio"
     compileSdk = 35
 
+    buildFeatures {
+        viewBinding=true
+    }
     defaultConfig {
         applicationId = "com.ot.lidarsstudio"
         minSdk = 24
@@ -37,6 +40,7 @@ android {
         jvmTarget = "11"
     }
 }
+
 
 dependencies {
     implementation(libs.androidx.core.ktx)

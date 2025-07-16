@@ -9,7 +9,20 @@
         android:layout_height="wrap_content"
         android:padding="24dp">
 
+        <ImageButton
+            android:id="@+id/buttonHamburger"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Open Menu"
+            android:src="@drawable/ic_menu"
+            android:scaleType="centerInside"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <!-- כותרת עליונה -->
+
         <TextView
             android:id="@+id/textStudioTitle"
             android:layout_width="wrap_content"

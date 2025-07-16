@@ -7,9 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ot.lidarsstudio.R
-import com.ot.lidarsstudio.models.Appointment
-import java.text.SimpleDateFormat
-import java.util.*
+import com.ot.lidarsstudio.utils.Appointment
 
 class AppointmentAdapter(
     private val items: MutableList<Appointment>,
@@ -19,7 +17,7 @@ class AppointmentAdapter(
 
     inner class VH(item: View) : RecyclerView.ViewHolder(item) {
         val textDetails: TextView = item.findViewById(R.id.textAppointmentItem)
-        val btnAction: Button   = item.findViewById(R.id.buttonAppointmentAction)
+        val btnAction: Button = item.findViewById(R.id.buttonAppointmentAction)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -32,19 +30,38 @@ class AppointmentAdapter(
 
     override fun onBindViewHolder(holder: VH, pos: Int) {
         val appt = items[pos]
-        val dfDate = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
-        val dt = dfDate.format(appt.dateTime.toDate())
-        holder.textDetails.text = "${appt.service}\n$dt\nStatus: ${appt.status}"
 
-        holder.btnAction.visibility = View.VISIBLE
-        if (appt.status == "pending") {
-            holder.btnAction.text = "Confirm"
-            holder.btnAction.setOnClickListener { onConfirm(appt) }
-        } else if (appt.status == "scheduled") {
-            holder.btnAction.text = "Cancel"
-            holder.btnAction.setOnClickListener { onCancel(appt) }
+        // עיבוד משך זמן יפה לקריאה
+        val durationStr = if (appt.durationMinutes >= 60) {
+            val hours = appt.durationMinutes / 60
+            val minutes = appt.durationMinutes % 60
+            if (minutes == 0) "$hours hr" else "$hours hr $minutes min"
         } else {
-            holder.btnAction.visibility = View.GONE
+            "${appt.durationMinutes} min"
+        }
+
+        // בניית טקסט
+        holder.textDetails.text = """
+            ${appt.service}
+            ${appt.date} at ${appt.startHour}
+            Duration: $durationStr
+            Status: ${appt.status}
+        """.trimIndent()
+
+        // כפתור פעולה
+        holder.btnAction.visibility = View.VISIBLE
+        when (appt.status) {
+            "pending" -> {
+                holder.btnAction.text = "Confirm"
+                holder.btnAction.setOnClickListener { onConfirm(appt) }
+            }
+            "scheduled" -> {
+                holder.btnAction.text = "Cancel"
+                holder.btnAction.setOnClickListener { onCancel(appt) }
+            }
+            else -> {
+                holder.btnAction.visibility = View.GONE
+            }
         }
     }
 }

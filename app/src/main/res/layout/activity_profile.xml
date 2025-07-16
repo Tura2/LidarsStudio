@@ -86,6 +86,7 @@
             android:layout_marginTop="4dp" />
     </LinearLayout>
 
+
     <!-- כפתור עריכה -->
     <ImageButton
         android:id="@+id/buttonEditProfile"
@@ -136,12 +137,26 @@
             android:fontFamily="@font/heebo_medium" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/buttonAddAppointments"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Add Available Appointments"
+        android:backgroundTint="@color/secondaryColor"
+        android:textColor="@color/white"
+        android:fontFamily="@font/heebo_medium"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toggleButtonsLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
     <!-- תוכן דינמי שמתחלף -->
+
     <FrameLayout
         android:id="@+id/appointmentContentContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/toggleButtonsLayout"
+        app:layout_constraintTop_toBottomOf="@id/buttonAddAppointments"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

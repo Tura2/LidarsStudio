@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="@color/white">
+
+    <!-- כותרת -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Available Appointments"
+        android:textSize="20sp"
+        android:textColor="@color/primaryColor"
+        android:fontFamily="@font/heebo_bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- טוגל בין Add ל־Remove -->
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggleAddRemoveGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/titleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonToggleAdd"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add Slots" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonToggleRemove"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Remove Slots" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <!-- כפתור לבחירת תאריך התחלה -->
+    <Button
+        android:id="@+id/buttonPickStartDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pick Start Date"
+        android:backgroundTint="@color/primaryColor"
+        android:textColor="@color/white"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/toggleAddRemoveGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- תצוגת תאריך התחלה נבחר -->
+    <TextView
+        android:id="@+id/textSelectedStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selected start date: -"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/heebo_regular"
+        app:layout_constraintTop_toBottomOf="@id/buttonPickStartDate"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- כפתור לבחירת תאריך סיום -->
+    <Button
+        android:id="@+id/buttonPickEndDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pick End Date"
+        android:backgroundTint="@color/primaryColor"
+        android:textColor="@color/white"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/textSelectedStartDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- תצוגת תאריך סיום נבחר -->
+    <TextView
+        android:id="@+id/textSelectedEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selected end date: -"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/heebo_regular"
+        app:layout_constraintTop_toBottomOf="@id/buttonPickEndDate"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- שורה לבחירת שעות -->
+    <LinearLayout
+        android:id="@+id/timeSelectionLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/textSelectedEndDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Spinner
+            android:id="@+id/spinnerStartTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:prompt="@string/select_start_time" />
+
+        <Spinner
+            android:id="@+id/spinnerEndTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:prompt="@string/select_end_time"
+            android:layout_marginStart="16dp" />
+    </LinearLayout>
+
+    <!-- כפתור יצירת/מחיקת סלוטים -->
+    <Button
+        android:id="@+id/buttonCreateSlots"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Add/Remove Slots"
+        android:backgroundTint="@color/secondaryColor"
+        android:textColor="@color/white"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@id/timeSelectionLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

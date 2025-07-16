@@ -98,7 +98,7 @@
             android:layout_margin="16dp"
             android:background="@drawable/ic_close"
             android:src="@drawable/ic_close"
-            android:scaleType="center"
+            android:scaleType="fitCenter"
             android:contentDescription="Close"
             android:layout_gravity="top|end" />
     </FrameLayout>

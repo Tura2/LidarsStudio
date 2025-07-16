@@ -15,7 +15,7 @@
 
         <!-- SplashActivity as the launcher -->
         <activity
-            android:name=".SplashActivity"
+            android:name=".WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,11 +24,16 @@
         </activity>
 
         <!-- Declare other activities -->
-        <activity android:name=".WelcomeActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".BookAppointmentActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".GalleryActivity" />
+        <activity android:name=".AddAvailableAppointmentsActivity" />
+        <activity android:name=".PriceListActivity" />
+
+
 
 
 

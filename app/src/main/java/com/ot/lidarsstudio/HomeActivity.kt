@@ -66,6 +66,12 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(Intent(this, BookAppointmentActivity::class.java))
             }
 
+        val buttonHamburger = findViewById<ImageButton>(R.id.buttonHamburger)
+        buttonHamburger.setOnClickListener {
+            val bottomSheet = MenuBottomSheetFragment()
+            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+        }
+
         // 3) Start fading images
         ImageFade.start(imageSlider, sliderImages, 3000)
 
