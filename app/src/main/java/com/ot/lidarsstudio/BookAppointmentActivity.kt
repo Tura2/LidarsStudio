@@ -1,5 +1,6 @@
 package com.ot.lidarsstudio
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -45,6 +46,13 @@ class BookAppointmentActivity : AppCompatActivity() {
             updateAppointmentViews()
             showGelNailOptions()
         }
+
+        val buttonTattoo = findViewById<MaterialButton>(R.id.buttonTattoo)
+        buttonTattoo.setOnClickListener {
+            val intent = Intent(this, TattooRequestActivity::class.java)
+            startActivity(intent)
+        }
+
 
         btnConfirmNow.setOnClickListener {
             pendingAppointment?.let {

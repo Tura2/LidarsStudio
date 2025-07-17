@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundColor"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/arrow_left"
+            android:contentDescription="Back"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="8dp" />
+        <!-- Screen title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tattoo Request"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textColor="@color/secondaryColor"
+            android:fontFamily="@font/heebo_bold"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- 1. Size spinner -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tattoo Size"
+            android:textColor="@color/secondaryColor"
+            android:fontFamily="@font/heebo_regular"
+            android:layout_marginBottom="8dp"/>
+        <Spinner
+            android:id="@+id/spinnerSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/tattoo_sizes"
+            android:backgroundTint="@color/outlineColor"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- 2. Concept title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Main Concept"
+            android:textColor="@color/secondaryColor"
+            android:fontFamily="@font/heebo_regular"
+            android:layout_marginBottom="8dp"/>
+        <EditText
+            android:id="@+id/etConcept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="e.g. geometric flower motif"
+            android:padding="12dp"
+            android:fontFamily="@font/heebo_regular"
+            android:textColor="@color/secondaryColor"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- 3. Detailed description -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Detailed Description"
+            android:textColor="@color/secondaryColor"
+            android:fontFamily="@font/heebo_regular"
+            android:layout_marginBottom="8dp"/>
+        <EditText
+            android:id="@+id/etDescription"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:gravity="top"
+            android:hint="Describe colors, placement, style…"
+            android:inputType="textMultiLine"
+            android:padding="12dp"
+            android:fontFamily="@font/heebo_regular"
+            android:textColor="@color/secondaryColor"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- 4. Image picker (up to 3) -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Images (up to 3)"
+            android:textColor="@color/secondaryColor"
+            android:fontFamily="@font/heebo_regular"
+            android:layout_marginBottom="8dp"/>
+        <LinearLayout
+            android:id="@+id/imageContainer"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:layout_marginBottom="16dp">
+
+            <ImageButton
+                android:id="@+id/btnAddImage"
+                style="@style/CloseIconButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_add_photo"
+                android:contentDescription="Add photo"/>
+        </LinearLayout>
+
+        <!-- 5. Submit button -->
+        <Button
+            android:id="@+id/btnSubmitTattoo"
+            style="@style/PrimaryButton"
+            android:text="Submit Request"/>
+    </LinearLayout>
+</ScrollView>

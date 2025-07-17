@@ -33,6 +33,7 @@
         <activity android:name=".AddAvailableAppointmentsActivity" />
         <activity android:name=".PriceListActivity" />
         <activity android:name=".EditProfileActivity" />
+        <activity android:name=".TattooRequestActivity" />
 
 
 

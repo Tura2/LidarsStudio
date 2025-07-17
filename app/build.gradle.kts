@@ -58,6 +58,9 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     // Firebase BOM to manage versions
     implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
+
 
     // Firebase dependencies
     implementation("com.google.firebase:firebase-storage")
