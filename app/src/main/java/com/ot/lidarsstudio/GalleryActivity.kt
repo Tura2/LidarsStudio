@@ -23,7 +23,7 @@ class GalleryActivity : AppCompatActivity() {
     private lateinit var popupImageView: ImageView
     private lateinit var closePopupButton: ImageButton
     private lateinit var toggleNailsButton: Button
-    private lateinit var toggleTattoosButton: Button
+    private lateinit var toggleTattoosButton: Button 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

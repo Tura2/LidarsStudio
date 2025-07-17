@@ -100,7 +100,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         buttonEditProfile.setOnClickListener {
-            // TODO: startActivity(Intent(this, EditProfileActivity::class.java))
+            startActivity(Intent(this, EditProfileActivity::class.java))
         }
     }
 

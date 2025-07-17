@@ -13,24 +13,23 @@
         android:layout_height="24dp"
         android:background="@android:color/transparent"
         android:src="@drawable/arrow_left"
-    android:contentDescription="Back"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    android:layout_marginTop="24dp"
-    android:layout_marginStart="8dp" />
+        android:contentDescription="Back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp" />
 
-    <!-- Register Title -->
 
     <!-- Logo -->
 
     <TextView
-        android:id="@+id/textRegisterTop"
+        android:id="@+id/textEditProfileTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/heebo_bold"
         android:letterSpacing="0.0125"
-        android:text="Register"
+        android:text="Update Profile"
         android:textColor="#191A1A"
         android:textSize="17sp"
         android:textStyle="bold"
@@ -44,7 +43,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/lidar_studio_logo"
-        app:layout_constraintTop_toBottomOf="@id/textRegisterTop"
+        app:layout_constraintTop_toBottomOf="@id/textEditProfileTop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
@@ -81,21 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp" />
 
-    <!-- Password -->
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:textSize="14sp"
-        android:background="@drawable/edit_text_background"
-        android:padding="12dp"
-        android:inputType="textPassword"
-        android:fontFamily="@font/heebo_regular"
-        app:layout_constraintTop_toBottomOf="@id/editTextEmail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp" />
+
 
     <!-- Phone Number with +972 hint -->
     <EditText
@@ -108,7 +93,7 @@
         android:padding="12dp"
         android:inputType="phone"
         android:fontFamily="@font/heebo_regular"
-        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@id/editTextEmail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp" />
@@ -132,10 +117,10 @@
 
     <!-- Sign Up Button -->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonSignUp"
+        android:id="@+id/buttonUpdateProfile"
         android:layout_width="320dp"
         style="@style/PrimaryButton"
-        android:text="Sign up"
+        android:text="Update"
         app:layout_constraintTop_toBottomOf="@id/editTextDob"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -152,7 +137,7 @@
         android:letterSpacing="0.0125"
         android:fontFamily="@font/heebo_regular"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@id/buttonSignUp"
+        app:layout_constraintTop_toBottomOf="@id/buttonUpdateProfile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp" />

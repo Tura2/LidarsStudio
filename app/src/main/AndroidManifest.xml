@@ -32,6 +32,7 @@
         <activity android:name=".GalleryActivity" />
         <activity android:name=".AddAvailableAppointmentsActivity" />
         <activity android:name=".PriceListActivity" />
+        <activity android:name=".EditProfileActivity" />
 
 
 
