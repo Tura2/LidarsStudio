@@ -59,3 +59,7 @@ app.post("/", async (req, res) => {
 });
 
 exports.sendTattooRequest = functions.https.onRequest(app);
+
+exports.getServerTime = functions.https.onCall((data, context) => {
+  return { serverTimestamp: Date.now() };
+});
