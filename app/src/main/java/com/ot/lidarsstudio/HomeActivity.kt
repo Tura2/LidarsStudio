@@ -1,6 +1,7 @@
 package com.ot.lidarsstudio
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -16,7 +17,7 @@ import com.google.android.material.button.MaterialButton
 import com.ot.lidarsstudio.adapters.PhotoAdapter
 import com.ot.lidarsstudio.utils.ImageFade
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
 
     private lateinit var imageSlider: ImageView
     private lateinit var textWelcome: TextView
@@ -39,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
         imageSlider      = findViewById(R.id.imageSlider)
         textWelcome      = findViewById(R.id.textWelcome)
         recyclerViewPhotos = findViewById(R.id.recyclerViewPhotos)
-
+        setupDrawer()
         // 1) Fetch current user’s name from Firestore
         val user = auth.currentUser
         if (user != null) {
@@ -66,12 +67,6 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(Intent(this, BookAppointmentActivity::class.java))
             }
 
-        val buttonHamburger = findViewById<ImageButton>(R.id.buttonHamburger)
-        buttonHamburger.setOnClickListener {
-            val bottomSheet = MenuBottomSheetFragment()
-            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
-        }
-
         // 3) Start fading images
         ImageFade.start(imageSlider, sliderImages, 3000)
 
@@ -86,16 +81,14 @@ class HomeActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerViewPhotos.adapter = PhotoAdapter(photoImages)
 
-        // 5) Social & accessibility buttons (placeholders)
-        findViewById<ImageButton>(R.id.btnInstagram)
-            .setOnClickListener { /* TODO: open Instagram */ }
-        findViewById<ImageButton>(R.id.btnFacebook)
-            .setOnClickListener { /* TODO: open Facebook */ }
-        findViewById<ImageButton>(R.id.btnWhatsapp)
-            .setOnClickListener { /* TODO: open WhatsApp */ }
-        findViewById<ImageButton>(R.id.btnTiktok)
-            .setOnClickListener { /* TODO: open TikTok */ }
-        findViewById<ImageButton>(R.id.btnAccessibility)
-            .setOnClickListener { /* TODO: handle accessibility */ }
+        findViewById<ImageButton>(R.id.btnInstagram).setOnClickListener { openLink("https://www.instagram.com/lidartura_nails") }
+        findViewById<ImageButton>(R.id.btnWhatsapp).setOnClickListener { openLink("https://wa.link/mjh65g") }
+        findViewById<ImageButton>(R.id.btnFacebook).setOnClickListener { openLink("https://www.facebook.com/lidartura") }
+        findViewById<ImageButton>(R.id.btnTiktok).setOnClickListener { openLink("https://www.tiktok.com/@lidartura") }
+    }
+    private fun openLink(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 }

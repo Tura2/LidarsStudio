@@ -194,13 +194,5 @@
             android:layout_margin="12dp"
             android:src="@drawable/ic_tiktok" />
 
-        <ImageButton
-            android:id="@+id/btnAccessibility"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@android:color/transparent"
-            android:scaleType="centerInside"
-            android:layout_margin="12dp"
-            android:src="@drawable/ic_accessibility" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

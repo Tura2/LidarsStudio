@@ -18,7 +18,7 @@ class PriceListActivity : AppCompatActivity() {
 
         // WhatsApp
         findViewById<ImageButton>(R.id.btnWhatsapp).setOnClickListener {
-            openLink("https://wa.me/972540000000") // עדכן את המספר לטלפון האמיתי עם קידומת ללא +
+            openLink("https://wa.link/mjh65g")
         }
 
         // Facebook
@@ -31,11 +31,6 @@ class PriceListActivity : AppCompatActivity() {
             openLink("https://www.tiktok.com/@lidartura")
         }
 
-        // Accessibility (דוגמה למעבר לעמוד אחר באפליקציה)
-        findViewById<ImageButton>(R.id.btnAccessibility).setOnClickListener {
-            // למשל תפתח עמוד עזרה/הנחיות
-           // startActivity(Intent(this, AccessibilityActivity::class.java))
-        }
     }
 
     private fun openLink(url: String) {

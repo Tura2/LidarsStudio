@@ -44,20 +44,19 @@ class SplashActivity : AppCompatActivity() {
         finish()
     }
 
-    // הפונקציה החדשה לקבלת זמן שרת מה-HTTP API
     private fun getServerTime(onResult: (Long) -> Unit) {
         val url = "https://getservertime-fhvdk4ir7a-uc.a.run.app"
         val request = Request.Builder().url(url).build()
         httpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e(TAG, "Failed to fetch server time via HTTP", e)
+                Log.e(TAG, "Failed to fetch server time via HTTP")
                 onResult(System.currentTimeMillis())
             }
 
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (!it.isSuccessful) {
-                        Log.e(TAG, "Unexpected code $response")
+                        Log.e(TAG, "Unexpected response code from server time HTTP")
                         onResult(System.currentTimeMillis())
                         return
                     }
@@ -74,11 +73,10 @@ class SplashActivity : AppCompatActivity() {
                             Log.e(TAG, "Invalid serverTimestamp in response JSON")
                             onResult(System.currentTimeMillis())
                         } else {
-                            Log.d(TAG, "Got serverTimestamp=$serverTimestamp from HTTP API")
                             onResult(serverTimestamp)
                         }
                     } catch (ex: Exception) {
-                        Log.e(TAG, "Failed to parse server time JSON", ex)
+                        Log.e(TAG, "Failed to parse server time JSON")
                         onResult(System.currentTimeMillis())
                     }
                 }
@@ -87,34 +85,31 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun cleanOldSlots(onComplete: () -> Unit) {
-        Log.d(TAG, "cleanOldSlots start")
+        Log.d(TAG, "Starting cleanOldSlots")
         getServerTime { serverNowMs ->
             val msInDay = 24L * 60 * 60 * 1000
             val tzOffset = TimeZone.getDefault().getOffset(serverNowMs)
             val localTimeMs = serverNowMs + tzOffset
             val msSinceMidnight = localTimeMs % msInDay
             val todayMidnightMs = serverNowMs - msSinceMidnight
-            Log.d(TAG, "todayMidnightMs = $todayMidnightMs (msSinceMidnight=$msSinceMidnight, tzOffset=$tzOffset)")
 
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
             db.collection("availableAppointments")
                 .get()
                 .addOnSuccessListener { qry ->
-                    Log.d(TAG, "fetched ${qry.size()} appointment documents")
                     val batch = db.batch()
                     var done = 0
                     val total = qry.size()
 
                     if (total == 0) {
-                        Log.d(TAG, "no documents to process")
+                        Log.d(TAG, "No appointment documents to process")
                         onComplete()
                         return@addOnSuccessListener
                     }
 
                     for (doc in qry.documents) {
                         val dateStr = doc.id
-                        Log.d(TAG, "processing doc id='$dateStr'")
                         val date = try {
                             sdf.parse(dateStr)
                         } catch (e: Exception) {
@@ -122,22 +117,14 @@ class SplashActivity : AppCompatActivity() {
                         }
 
                         if (date == null) {
-                            Log.d(TAG, "  invalid date format, deleting doc")
                             batch.delete(doc.reference)
                         } else {
                             val dateMs = date.time
                             when {
-                                dateMs < todayMidnightMs -> {
-                                    Log.d(TAG, "  date $dateStr is before today, deleting doc")
-                                    batch.delete(doc.reference)
-                                }
+                                dateMs < todayMidnightMs -> batch.delete(doc.reference)
                                 dateMs == todayMidnightMs -> {
-                                    Log.d(TAG, "  date $dateStr is today, checking slots")
-                                    val slots = doc.get("slots")
-                                            as? Map<String, Map<String, Any>> ?: emptyMap()
-                                    Log.d(TAG, "    found ${slots.size} slots")
+                                    val slots = doc.get("slots") as? Map<String, Map<String, Any>> ?: emptyMap()
                                     val updates = mutableMapOf<String, Any?>()
-
                                     for ((timeStr, _) in slots) {
                                         val parts = timeStr.split(":")
                                         if (parts.size == 2) {
@@ -145,43 +132,28 @@ class SplashActivity : AppCompatActivity() {
                                             val m = parts[1].toIntOrNull() ?: 0
                                             val slotMs = todayMidnightMs + h * 3_600_000 + m * 60_000
                                             if (slotMs < serverNowMs) {
-                                                Log.d(TAG, "      slot '$timeStr' already passed (slotMs=$slotMs), marking for deletion")
                                                 updates["slots.$timeStr"] = null
-                                            } else {
-                                                Log.d(TAG, "      slot '$timeStr' is still valid (slotMs=$slotMs)")
                                             }
                                         }
                                     }
-                                    if (updates.isNotEmpty()) {
-                                        Log.d(TAG, "    applying ${updates.size} slot deletions")
-                                        batch.update(doc.reference, updates)
-                                    } else {
-                                        Log.d(TAG, "    no slots to delete")
-                                    }
-                                }
-                                else -> {
-                                    Log.d(TAG, "  date $dateStr is in the future, skipping")
+                                    if (updates.isNotEmpty()) batch.update(doc.reference, updates)
                                 }
                             }
                         }
 
                         done++
                         if (done == total) {
-                            Log.d(TAG, "all $total documents processed, committing batch")
                             batch.commit()
-                                .addOnSuccessListener {
-                                    Log.d(TAG, "batch commit succeeded")
-                                    onComplete()
-                                }
+                                .addOnSuccessListener { onComplete() }
                                 .addOnFailureListener { e ->
-                                    Log.e(TAG, "batch commit failed", e)
+                                    Log.e(TAG, "Batch commit failed", e)
                                     onComplete()
                                 }
                         }
                     }
                 }
                 .addOnFailureListener { e ->
-                    Log.e(TAG, "failed to fetch appointments", e)
+                    Log.e(TAG, "Failed to fetch appointments", e)
                     onComplete()
                 }
         }
