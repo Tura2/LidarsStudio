@@ -36,6 +36,7 @@
         <activity android:name=".TattooRequestActivity" />
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".AboutActivity" />
+        <activity android:name=".ResetPasswordActivity" />
 
 
 

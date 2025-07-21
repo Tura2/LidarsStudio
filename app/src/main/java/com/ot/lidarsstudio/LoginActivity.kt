@@ -30,6 +30,10 @@ class LoginActivity : AppCompatActivity() {
         val passEt   = findViewById<EditText>(R.id.editTextPassword)
         val loginBtn = findViewById<Button>(R.id.buttonLogin)
         val signupTv = findViewById<TextView>(R.id.textSignup)
+        // Clickable "Forgot Password?"
+        findViewById<TextView>(R.id.textForgotPassword).setOnClickListener {
+            startActivity(Intent(this, ResetPasswordActivity::class.java))
+        }
 
         // Clickable "Register now"
         val prompt = "Don't have an account? Register now"
