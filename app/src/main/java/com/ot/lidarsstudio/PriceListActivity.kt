@@ -4,12 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageButton
-import androidx.appcompat.app.AppCompatActivity
-
-class PriceListActivity : AppCompatActivity() {
+import com.ot.lidarsstudio.BaseActivity
+class PriceListActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_price_list)
+        setupDrawer()
 
         // Instagram
         findViewById<ImageButton>(R.id.btnInstagram).setOnClickListener {

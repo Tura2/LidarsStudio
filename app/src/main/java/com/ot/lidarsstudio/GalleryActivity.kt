@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.Tasks
@@ -15,8 +14,9 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.ot.lidarsstudio.adapters.GalleryAdapter
+import com.ot.lidarsstudio.BaseActivity
 
-class GalleryActivity : AppCompatActivity() {
+class GalleryActivity : BaseActivity() {
 
     private lateinit var recyclerViewGallery: RecyclerView
     private lateinit var popupImageContainer: FrameLayout
@@ -29,6 +29,7 @@ class GalleryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_gallery)
+        setupDrawer()
 
         // find views
         recyclerViewGallery       = findViewById(R.id.galleryRecyclerView)

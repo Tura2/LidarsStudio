@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ot.lidarsstudio.adapters.AppointmentAdapter
+import com.ot.lidarsstudio.BaseActivity
 import com.ot.lidarsstudio.utils.Appointment
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProfileActivity : AppCompatActivity() {
+
+class ProfileActivity : BaseActivity() {
 
     private lateinit var textUserName: TextView
     private lateinit var textUserEmail: TextView
@@ -39,7 +41,7 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-
+        setupDrawer()
         textUserName = findViewById(R.id.textUserName)
         textUserEmail = findViewById(R.id.textUserEmail)
         textUserPhone = findViewById(R.id.textUserPhone)

@@ -1,165 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
     android:background="@color/white">
 
-    <!-- לוגו -->
-    <ImageView
-        android:id="@+id/logoImageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/lidar_studio_logo"
-        android:contentDescription="Logo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!-- ─── Main content ─── -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <!-- שם משתמש -->
-    <TextView
-        android:id="@+id/textUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lidar Levi"
-        android:textSize="22sp"
-        android:textColor="@color/primaryColor"
-        android:fontFamily="@font/heebo_bold"
-        app:layout_constraintTop_toBottomOf="@id/logoImageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp" />
-
-    <!-- "Details" -->
-    <TextView
-        android:id="@+id/textDetailsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Details"
-        android:textColor="@color/secondaryColor"
-        android:textSize="16sp"
-        android:fontFamily="@font/heebo_medium"
-        app:layout_constraintTop_toBottomOf="@id/textUserName"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="24dp" />
-
-    <!-- אזור פרטי משתמש -->
-    <LinearLayout
-        android:id="@+id/userDetailsLayout"
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/textDetailsLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:id="@+id/textUserEmail"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="lidar@example.com"
-            android:textSize="14sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/heebo_regular" />
+            android:padding="24dp">
 
-        <TextView
-            android:id="@+id/textUserPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+972-54-0000000"
-            android:textSize="14sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/heebo_regular"
-            android:layout_marginTop="4dp" />
+            <!-- ☰ Hamburger (top-left) -->
+            <ImageButton
+                android:id="@+id/buttonHamburger"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_menu"
+                android:scaleType="fitCenter"
+                android:contentDescription="Open Menu"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
-        <TextView
-            android:id="@+id/textUserBirth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="03/04/1997"
-            android:textSize="14sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/heebo_regular"
-            android:layout_marginTop="4dp" />
-    </LinearLayout>
+            <!-- Logo, pushed below the hamburger -->
+            <ImageView
+                android:id="@+id/logoImageView"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/lidar_studio_logo"
+                android:contentDescription="Logo"
+                android:layout_marginTop="0dp"
+                app:layout_constraintTop_toBottomOf="@id/buttonHamburger"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
+            <!-- Username -->
+            <TextView
+                android:id="@+id/textUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lidar Levi"
+                android:textSize="22sp"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/heebo_bold"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@id/logoImageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- כפתור עריכה -->
-    <ImageButton
-        android:id="@+id/buttonEditProfile"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:src="@drawable/ic_edit"
-        android:scaleType="fitCenter"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:tint="@color/secondaryColor"
-        app:layout_constraintTop_toTopOf="@id/textDetailsLabel"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <!-- "Details" label -->
+            <TextView
+                android:id="@+id/textDetailsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Details"
+                android:textColor="@color/secondaryColor"
+                android:textSize="16sp"
+                android:fontFamily="@font/heebo_medium"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@id/textUserName"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Toggle בין סוגי התורים -->
-    <LinearLayout
-        android:id="@+id/toggleButtonsLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/userDetailsLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+            <!-- User details block -->
+            <LinearLayout
+                android:id="@+id/userDetailsLayout"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/textDetailsLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
-            android:id="@+id/buttonToggleUpcoming"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Upcoming Appointment"
-            android:paddingVertical="8dp"
-            android:layout_marginRight="4dp"
-            android:textSize="12sp"
-            android:backgroundTint="@color/primaryColor"
-            android:textColor="@color/white"
-            android:fontFamily="@font/heebo_medium" />
+                <TextView
+                    android:id="@+id/textUserEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="lidar@example.com"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/heebo_regular" />
 
-        <Button
-            android:id="@+id/buttonToggleHistory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Appointment History"
-            android:paddingVertical="8dp"
-            android:textSize="12sp"
-            android:backgroundTint="@color/primaryColor"
-            android:textColor="@color/white"
-            android:fontFamily="@font/heebo_medium" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/textUserPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+972-54-0000000"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/heebo_regular"
+                    android:layout_marginTop="4dp" />
 
-    <Button
-        android:id="@+id/buttonAddAppointments"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Add Available Appointments"
-        android:backgroundTint="@color/secondaryColor"
-        android:textColor="@color/white"
-        android:fontFamily="@font/heebo_medium"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/toggleButtonsLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
-    <!-- תוכן דינמי שמתחלף -->
+                <TextView
+                    android:id="@+id/textUserBirth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="03/04/1997"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/heebo_regular"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/appointmentContentContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/buttonAddAppointments"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- Edit button -->
+            <ImageButton
+                android:id="@+id/buttonEditProfile"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_edit"
+                android:scaleType="fitCenter"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/secondaryColor"
+                app:layout_constraintTop_toTopOf="@id/textDetailsLabel"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Toggle buttons -->
+            <LinearLayout
+                android:id="@+id/toggleButtonsLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@id/userDetailsLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <Button
+                    android:id="@+id/buttonToggleUpcoming"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Upcoming Appointment"
+                    android:paddingVertical="8dp"
+                    android:layout_marginEnd="4dp"
+                    android:textSize="12sp"
+                    android:backgroundTint="@color/primaryColor"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/heebo_medium" />
+
+                <Button
+                    android:id="@+id/buttonToggleHistory"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Appointment History"
+                    android:paddingVertical="8dp"
+                    android:textSize="12sp"
+                    android:backgroundTint="@color/primaryColor"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/heebo_medium" />
+            </LinearLayout>
+
+            <!-- "Add Available Appointments" button -->
+            <Button
+                android:id="@+id/buttonAddAppointments"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Add Available Appointments"
+                android:backgroundTint="@color/secondaryColor"
+                android:textColor="@color/white"
+                android:fontFamily="@font/heebo_medium"
+                android:visibility="gone"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/toggleButtonsLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Dynamic content container -->
+            <FrameLayout
+                android:id="@+id/appointmentContentContainer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintTop_toBottomOf="@id/buttonAddAppointments"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <!-- ─── Drawer NavigationView ─── -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_menu"/>
+</androidx.drawerlayout.widget.DrawerLayout>
