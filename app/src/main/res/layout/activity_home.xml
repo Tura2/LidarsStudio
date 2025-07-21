@@ -197,16 +197,6 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_tiktok" />
 
-            <ImageButton
-                android:id="@+id/btnAccessibility"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:background="@android:color/transparent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_accessibility" />
         </LinearLayout>
 
         <!-- טקסט סיום חמוד -->

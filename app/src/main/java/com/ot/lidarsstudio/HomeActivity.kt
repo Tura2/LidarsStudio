@@ -67,6 +67,12 @@ class HomeActivity : BaseActivity() {
                 startActivity(Intent(this, BookAppointmentActivity::class.java))
             }
 
+        // 3) “Address and contact” button
+        findViewById<MaterialButton>(R.id.buttonAddressContact)
+            .setOnClickListener {
+                startActivity(Intent(this, AboutActivity::class.java))
+            }
+
         // 3) Start fading images
         ImageFade.start(imageSlider, sliderImages, 3000)
 

@@ -54,8 +54,8 @@
     </style>
 
     <style name="CloseIconButton" parent="Widget.AppCompat.ImageButton">
-        <item name="android:layout_width">24dp</item>
-        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:contentDescription">Close</item>
         <item name="android:scaleType">fitCenter</item>

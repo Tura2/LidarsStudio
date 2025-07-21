@@ -44,6 +44,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 R.id.nav_profile   -> if (this !is ProfileActivity) startActivity(Intent(this, ProfileActivity::class.java))
                 R.id.nav_gallery   -> if (this !is GalleryActivity) startActivity(Intent(this, GalleryActivity::class.java))
                 R.id.nav_price_list-> if (this !is PriceListActivity) startActivity(Intent(this, PriceListActivity::class.java))
+                R.id.nav_about     -> if (this !is AboutActivity) startActivity(Intent(this, AboutActivity::class.java))
                 R.id.nav_logout    -> {
                     FirebaseAuth.getInstance().signOut()
                     startActivity(Intent(this, WelcomeActivity::class.java))

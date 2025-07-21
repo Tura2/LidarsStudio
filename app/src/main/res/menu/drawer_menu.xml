@@ -23,8 +23,14 @@
         android:icon="@drawable/ic_price" />
 
     <item
+        android:id="@+id/nav_about"
+        android:title="About"
+        android:icon="@drawable/ic_about" />
+
+    <item
         android:id="@+id/nav_logout"
         android:title="Logout"
         android:icon="@drawable/ic_logout" />
+
 
 </menu>

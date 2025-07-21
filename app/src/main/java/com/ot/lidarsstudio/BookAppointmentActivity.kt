@@ -5,8 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
+import android.widget.GridLayout
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -14,8 +20,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.ot.lidarsstudio.utils.Appointment
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.core.content.ContextCompat
-import android.widget.Toast
 
 class BookAppointmentActivity : AppCompatActivity() {
 
@@ -49,21 +53,15 @@ class BookAppointmentActivity : AppCompatActivity() {
 
         val buttonTattoo = findViewById<MaterialButton>(R.id.buttonTattoo)
         buttonTattoo.setOnClickListener {
-            val intent = Intent(this, TattooRequestActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, TattooRequestActivity::class.java))
         }
 
-
         btnConfirmNow.setOnClickListener {
-            pendingAppointment?.let {
-                saveAppointmentToFirestore(it)
-            }
+            pendingAppointment?.let { saveAppointmentToFirestore(it) }
         }
 
         btnCancel.setOnClickListener {
-            confirmedAppointment?.let {
-                cancelAppointment(it)
-            }
+            confirmedAppointment?.let { cancelAppointment(it) }
         }
 
         updateAppointmentViews()
@@ -81,8 +79,7 @@ class BookAppointmentActivity : AppCompatActivity() {
     private fun updateAppointmentViews() {
         val textConfirmed = findViewById<TextView>(R.id.textActiveAppointmentDetails)
         val textPending = findViewById<TextView>(R.id.textPendingAppointmentDetails)
-        val layoutActiveAppointmentBlock =
-            findViewById<LinearLayout>(R.id.layoutActiveAppointmentBlock)
+        val layoutActiveAppointmentBlock = findViewById<LinearLayout>(R.id.layoutActiveAppointmentBlock)
         val textConfirmedTitle = findViewById<TextView>(R.id.textActiveAppointment)
         val textPendingTitle = findViewById<TextView>(R.id.textPendingAppointment)
         val btnConfirmNow = findViewById<MaterialButton>(R.id.buttonConfirmPendingAppointment)
@@ -117,18 +114,17 @@ class BookAppointmentActivity : AppCompatActivity() {
             R.id.btnAnatomyGel to "Gel with Anatomy",
             R.id.btnPaintedGel to "Painted Gel"
         )
+        view.findViewById<ImageButton>(R.id.btnClose)
+            .setOnClickListener { dialog.dismiss() }
 
-        for ((id, name) in options) {
+        options.forEach { (id, name) ->
             view.findViewById<MaterialButton>(id).setOnClickListener {
                 selectedServiceName = name
                 dialog.dismiss()
                 showDateTimePicker()
             }
         }
-
-        view.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
-            dialog.dismiss()
-        }
+        view.findViewById<ImageButton>(R.id.btnClose).setOnClickListener { dialog.dismiss() }
 
         dialog.setContentView(view)
         dialog.show()
@@ -138,162 +134,168 @@ class BookAppointmentActivity : AppCompatActivity() {
         val dialog = BottomSheetDialog(this)
         val view = LayoutInflater.from(this).inflate(R.layout.bottomsheet_select_date_time, null)
         dialog.setContentView(view)
+        view.findViewById<ImageButton>(R.id.btnCloseDateTime)
+            .setOnClickListener { dialog.dismiss() }
 
         val layoutDates = view.findViewById<LinearLayout>(R.id.layoutDates)
         val layoutHours = view.findViewById<GridLayout>(R.id.layoutHours)
         val textChooseHour = view.findViewById<TextView>(R.id.textChooseHour)
-
-        val sampleDates = listOf(
-            "2025-07-16",
-            "2025-07-17",
-            "2025-07-18",
-            "2025-07-19",
-            "2025-07-20",
-            "2025-07-21"
-        )
         var selectedDateBtn: MaterialButton? = null
 
-        for (date in sampleDates) {
-            val btn = MaterialButton(this).apply {
-                text = date
-                setPadding(36, 12, 36, 12)
-                setTextColor(ContextCompat.getColor(context, R.color.white))
-                backgroundTintList = ContextCompat.getColorStateList(context, R.color.primaryColor)
-            }
+        layoutDates.removeAllViews()
+        fetchAvailableDates(
+            onResult = { dates ->
+                dates.forEach { dateId ->
+                    // format yyyy-MM-dd → d.M
+                    val parsed = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(dateId)
+                    val display = parsed?.let { SimpleDateFormat("d.M", Locale.getDefault()).format(it) } ?: dateId
 
-            btn.setOnClickListener {
-                selectedDateBtn?.backgroundTintList = ContextCompat.getColorStateList(
-                    this@BookAppointmentActivity,
-                    R.color.secondaryColor
-                )
-                btn.backgroundTintList = ContextCompat.getColorStateList(
-                    this@BookAppointmentActivity,
-                    R.color.primaryColor
-                )
-                selectedDateBtn = btn
-                selectedDate = date
-
-                layoutHours.removeAllViews()
-                textChooseHour.visibility = View.GONE
-
-                // טען את slots מ-Firestore לפי התאריך הנבחר
-                db.collection("availableAppointments")
-                    .document(date)
-                    .get()
-                    .addOnSuccessListener { doc ->
-                        if (doc.exists()) {
-                            val slotsMap = doc.get("slots") as? Map<String, Any> ?: emptyMap()
-                            val availableSlots = slotsMap.filter { (_, value) ->
-                                val details = value as? Map<String, Any>
-                                val isBooked = details?.get("isBooked") as? Boolean ?: true
-                                !isBooked
-                            }.keys.sorted()
-
-                            layoutHours.removeAllViews()  // נקה קודם כל את הקונטיינר
-
-                            if (availableSlots.isEmpty()) {
-                                Toast.makeText(
-                                    this,
-                                    "No available slots for $date",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                textChooseHour.visibility = View.GONE
-                                view.findViewById<ScrollView>(R.id.scrollHours).visibility =
-                                    View.GONE
-                            } else {
-                                for (time in availableSlots) {
-                                    Log.d("BookAppointment", "Adding button for $time")
-                                    val timeBtn = MaterialButton(this).apply {
-                                        text = time
-                                        setPadding(36, 12, 36, 12)
-                                        backgroundTintList = ContextCompat.getColorStateList(
-                                            context,
-                                            R.color.primaryColor
-                                        )
-                                        setTextColor(ContextCompat.getColor(context, R.color.white))
-                                    }
-                                    timeBtn.setOnClickListener {
-                                        selectedHour = time
-                                        val duration = getDurationForService(selectedServiceName)
-                                        pendingAppointment = Appointment(
-                                            id = "", service = selectedServiceName,
-                                            date = selectedDate, startHour = selectedHour,
-                                            durationMinutes = duration, status = "scheduled"
-                                        )
-                                        dialog.dismiss()
-                                        updateAppointmentViews()
-                                    }
-                                    layoutHours.addView(timeBtn)
-                                }
-                                textChooseHour.visibility = View.VISIBLE
-                                view.findViewById<ScrollView>(R.id.scrollHours).visibility =
-                                    View.VISIBLE
-                            }
-                        } else {
-                            Toast.makeText(this, "No available slots for $date", Toast.LENGTH_SHORT)
-                                .show()
-                            textChooseHour.visibility = View.GONE
-                        }
+                    val btn = MaterialButton(this).apply {
+                        text = display
+                        setPadding(36, 12, 36, 12)
+                        setTextColor(ContextCompat.getColor(context, R.color.white))
+                        backgroundTintList = ContextCompat.getColorStateList(context, R.color.primaryColor)
                     }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Failed to load available slots", Toast.LENGTH_SHORT)
-                            .show()
+
+                    btn.setOnClickListener {
+                        selectedDateBtn?.backgroundTintList = ContextCompat.getColorStateList(
+                            this, R.color.secondaryColor
+                        )
+                        btn.backgroundTintList = ContextCompat.getColorStateList(
+                            this, R.color.primaryColor
+                        )
+                        selectedDateBtn = btn
+                        selectedDate = dateId
+
+                        layoutHours.removeAllViews()
                         textChooseHour.visibility = View.GONE
+                        loadAndDisplaySlotsFor(dateId, view, layoutHours, textChooseHour, dialog)
                     }
 
+                    layoutDates.addView(btn)
+                }
+            },
+            onError = {
+                Toast.makeText(this, "Failed to load dates", Toast.LENGTH_SHORT).show()
             }
-
-            layoutDates.addView(btn)
-        }
+        )
 
         dialog.show()
     }
 
+    // Fetches all document IDs under availableAppointments
+    private fun fetchAvailableDates(onResult: (List<String>) -> Unit, onError: () -> Unit) {
+        db.collection("availableAppointments")
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val dates = snapshot.documents.map { it.id }.sorted()
+                onResult(dates)
+            }
+            .addOnFailureListener {
+                onError()
+            }
+    }
 
-    private fun generateTimeSlots(start: String, end: String, intervalMinutes: Int): List<String> {
-        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val startTime = format.parse(start) ?: return emptyList()
-        val endTime = format.parse(end) ?: return emptyList()
+    // Loads slots for a specific date and populates hour buttons
+    private fun loadAndDisplaySlotsFor(
+        date: String,
+        bottomSheetView: View,
+        layoutHours: GridLayout,
+        textChooseHour: TextView,
+        dialog: BottomSheetDialog
+    ) {
+        db.collection("availableAppointments")
+            .document(date)
+            .get()
+            .addOnSuccessListener { doc ->
+                if (!doc.exists()) {
+                    Toast.makeText(this, "No slots for $date", Toast.LENGTH_SHORT).show()
+                    return@addOnSuccessListener
+                }
 
-        val slots = mutableListOf<String>()
-        val cal = Calendar.getInstance().apply { time = startTime }
+                val slotsMap = doc.get("slots") as? Map<String, Any> ?: emptyMap()
+                val available = slotsMap.filter { (_, v) ->
+                    (v as? Map<*, *>)?.get("isBooked") == false
+                }.keys.sorted()
 
-        while (cal.time <= endTime) {
-            slots.add(format.format(cal.time))
-            cal.add(Calendar.MINUTE, intervalMinutes)
-        }
-        return slots
+                if (available.isEmpty()) {
+                    Toast.makeText(this, "No available slots for $date", Toast.LENGTH_SHORT).show()
+                    textChooseHour.visibility = View.GONE
+                    bottomSheetView.findViewById<ScrollView>(R.id.scrollHours).visibility = View.GONE
+                    return@addOnSuccessListener
+                }
+
+                layoutHours.removeAllViews()
+                available.forEach { time ->
+                    Log.d("BookAppointment", "Adding button for $time")
+                    val timeBtn = MaterialButton(this).apply {
+                        text = time
+                        setPadding(36, 12, 36, 12)
+                        setTextColor(ContextCompat.getColor(context, R.color.white))
+                        backgroundTintList = ContextCompat.getColorStateList(
+                            context, R.color.primaryColor
+                        )
+                    }
+
+                    timeBtn.setOnClickListener {
+                        selectedHour = time
+                        val duration = getDurationForService(selectedServiceName)
+                        pendingAppointment = Appointment(
+                            id = "",
+                            service = selectedServiceName,
+                            date = selectedDate,
+                            startHour = selectedHour,
+                            durationMinutes = duration,
+                            status = "scheduled"
+                        )
+                        dialog.dismiss()
+                        updateAppointmentViews()
+                    }
+
+                    layoutHours.addView(timeBtn)
+                }
+
+                textChooseHour.visibility = View.VISIBLE
+                bottomSheetView.findViewById<ScrollView>(R.id.scrollHours).visibility = View.VISIBLE
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to load slots", Toast.LENGTH_SHORT).show()
+                textChooseHour.visibility = View.GONE
+            }
     }
 
     private fun saveAppointmentToFirestore(appt: Appointment) {
         val user = auth.currentUser ?: return
         val userId = user.uid
 
-        db.collection("users").document(userId).get()
-            .addOnSuccessListener { document ->
-                val name = document.getString("fullName") ?: "Unknown"
-                val phone = document.getString("phone") ?: "0000000000"
-
-                val userDocId = "${name}_${phone}".replace(" ", "_")
-                val appointmentId = "${appt.date}_${appt.startHour}".replace(" ", "_")
-
-                val docRef = db.collection("appointments")
-                    .document(userDocId)
-                    .collection("userAppointments")
-                    .document(appointmentId)
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { doc ->
+                val name = doc.getString("fullName") ?: "Unknown"
+                val phone = doc.getString("phone") ?: "0000000000"
+                val userDocId = "${'$'}{name}_{'$'}{phone}".replace(" ", "_")
+                val apptId     = "${'$'}{appt.date}_{'$'}{appt.startHour}".replace(" ", "_")
 
                 val appointmentWithId = appt.copy(
-                    id = appointmentId,
+                    id = apptId,
                     userId = userId,
                     phone = phone,
                     fullName = name
                 )
 
-                docRef.set(appointmentWithId)
+                db.collection("appointments")
+                    .document(userDocId)
+                    .collection("userAppointments")
+                    .document(apptId)
+                    .set(appointmentWithId)
                     .addOnSuccessListener {
                         confirmedAppointment = appointmentWithId
-                        pendingAppointment = null
-                        removeFromAvailableAppointments(appt.date, appt.startHour, appt.durationMinutes)
+                        pendingAppointment   = null
+                        removeFromAvailableAppointments(
+                            appt.date,
+                            appt.startHour,
+                            appt.durationMinutes
+                        )
                         updateAppointmentViews()
                         Toast.makeText(this, "Appointment confirmed!", Toast.LENGTH_SHORT).show()
                     }
@@ -306,82 +308,76 @@ class BookAppointmentActivity : AppCompatActivity() {
             }
     }
 
-
-
-
-
     private fun removeFromAvailableAppointments(date: String, startHour: String, duration: Int) {
-        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val startTime = format.parse(startHour) ?: return
-        val cal = Calendar.getInstance().apply { time = startTime }
-
+        val fmt = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val start = fmt.parse(startHour) ?: return
+        val cal = Calendar.getInstance().apply { time = start }
         val steps = duration / 30
         val updates = hashMapOf<String, Any>()
 
         repeat(steps) {
-            val slotTime = format.format(cal.time)
-            // עדכון השדה isBooked לשם הסלוט המתאים בתוך slots
-            updates["slots.$slotTime.isBooked"] = true
+            val slot = fmt.format(cal.time)
+            updates["slots.$slot.isBooked"] = true
             cal.add(Calendar.MINUTE, 30)
         }
 
-        val docRef = db.collection("availableAppointments").document(date)
-        docRef.update(updates)
+        db.collection("availableAppointments")
+            .document(date)
+            .update(updates)
             .addOnSuccessListener {
-                Log.d("BookAppointment", "Successfully updated availableAppointments - marked slots as booked")
+                Log.d("BookAppointment", "Slots marked booked")
             }
-            .addOnFailureListener { e ->
-                Log.e("BookAppointment", "Failed to update availableAppointments", e)
-            }
+            .addOnFailureListener { e -> Log.e("BookAppointment", "Failed to update slots", e) }
     }
 
     private fun cancelAppointment(appt: Appointment) {
         val user = auth.currentUser ?: return
         val userId = user.uid
 
-        db.collection("users").document(userId).get()
-            .addOnSuccessListener { document ->
-                val name = document.getString("fullName") ?: "Unknown"
-                val phone = document.getString("phone") ?: "0000000000"
-                val userDocId = "${name}_${phone}".replace(" ", "_")
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { doc ->
+                val name = doc.getString("fullName") ?: "Unknown"
+                val phone = doc.getString("phone") ?: "0000000000"
+                val userDocId = "${'$'}{name}_{'$'}{phone}".replace(" ", "_")
 
-                db.collection("appointments").document(userDocId)
+                db.collection("appointments")
+                    .document(userDocId)
                     .collection("userAppointments")
                     .document(appt.id)
                     .delete()
                     .addOnSuccessListener {
                         confirmedAppointment = null
-                        restoreAvailableAppointments(appt.date, appt.startHour, appt.durationMinutes)
+                        restoreAvailableAppointments(
+                            appt.date,
+                            appt.startHour,
+                            appt.durationMinutes
+                        )
                         updateAppointmentViews()
                         Toast.makeText(this, "Appointment cancelled.", Toast.LENGTH_SHORT).show()
                     }
             }
     }
 
-
-
-
     private fun restoreAvailableAppointments(date: String, startHour: String, duration: Int) {
-        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val startTime = format.parse(startHour) ?: return
-        val cal = Calendar.getInstance().apply { time = startTime }
-
+        val fmt = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val start = fmt.parse(startHour) ?: return
+        val cal = Calendar.getInstance().apply { time = start }
         val steps = duration / 30
         val updates = hashMapOf<String, Any>()
 
         repeat(steps) {
-            val slotTime = format.format(cal.time)
-            updates["slots.$slotTime.isBooked"] = false
+            val slot = fmt.format(cal.time)
+            updates["slots.$slot.isBooked"] = false
             cal.add(Calendar.MINUTE, 30)
         }
 
-        val docRef = db.collection("availableAppointments").document(date)
-        docRef.update(updates)
+        db.collection("availableAppointments")
+            .document(date)
+            .update(updates)
             .addOnSuccessListener {
-                Log.d("BookAppointment", "Successfully restored availableAppointments - marked slots as free")
+                Log.d("BookAppointment", "Slots restored free")
             }
-            .addOnFailureListener { e ->
-                Log.e("BookAppointment", "Failed to restore availableAppointments", e)
-            }
+            .addOnFailureListener { e -> Log.e("BookAppointment", "Failed to restore slots", e) }
     }
 }
