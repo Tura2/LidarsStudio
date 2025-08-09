@@ -60,6 +60,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
 
+    implementation("com.airbnb.android:lottie:6.4.0")
+
 
 
 

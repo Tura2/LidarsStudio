@@ -94,7 +94,7 @@ class LoginActivity : AppCompatActivity() {
                                 .addOnSuccessListener { doc ->
                                     val role = doc.getString("role")
                                     val nextCls = if (role == "admin")
-                                        AdminActivity::class.java
+                                        HomeActivity::class.java
                                     else
                                         HomeActivity::class.java
 

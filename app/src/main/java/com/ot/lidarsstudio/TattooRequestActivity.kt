@@ -82,7 +82,6 @@ class TattooRequestActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // קרא את פרטי המשתמש מ-Firestore
             val db = FirebaseFirestore.getInstance()
             val userId = user.uid
 
@@ -91,6 +90,8 @@ class TattooRequestActivity : AppCompatActivity() {
                     val userName = document.getString("fullName") ?: "Unknown User"
                     val userEmail = user.email ?: "unknown@example.com"
                     val userPhone = document.getString("phone") ?: "0500000000"
+
+                    SubmissionStatusActivity.startLoading(this@TattooRequestActivity)
 
                     if (selectedImageUris.isEmpty()) {
                         sendTattooRequest(size, concept, description, emptyList(), userName, userEmail, userPhone)
@@ -225,6 +226,7 @@ class TattooRequestActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (response.isSuccessful) {
                         Toast.makeText(this@TattooRequestActivity, "Tattoo request sent successfully!", Toast.LENGTH_LONG).show()
+                        SubmissionStatusActivity.showSuccess(this@TattooRequestActivity)
                         clearForm()
                     } else {
                         Toast.makeText(this@TattooRequestActivity, "Server error: ${response.code}", Toast.LENGTH_LONG).show()

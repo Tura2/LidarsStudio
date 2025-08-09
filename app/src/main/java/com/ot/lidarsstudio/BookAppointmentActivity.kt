@@ -273,8 +273,9 @@ class BookAppointmentActivity : AppCompatActivity() {
             .addOnSuccessListener { doc ->
                 val name = doc.getString("fullName") ?: "Unknown"
                 val phone = doc.getString("phone") ?: "0000000000"
-                val userDocId = "${'$'}{name}_{'$'}{phone}".replace(" ", "_")
-                val apptId     = "${'$'}{appt.date}_{'$'}{appt.startHour}".replace(" ", "_")
+                val userDocId = "${name}_${phone}".replace(" ", "_")
+                val apptId     = "${appt.date}_${appt.startHour}".replace(" ", "_")
+
 
                 val appointmentWithId = appt.copy(
                     id = apptId,
@@ -337,8 +338,8 @@ class BookAppointmentActivity : AppCompatActivity() {
         db.collection("users").document(userId)
             .get()
             .addOnSuccessListener { doc ->
-                val name = doc.getString("fullName") ?: "Unknown"
-                val phone = doc.getString("phone") ?: "0000000000"
+                doc.getString("fullName") ?: "Unknown"
+                doc.getString("phone") ?: "0000000000"
                 val userDocId = "${'$'}{name}_{'$'}{phone}".replace(" ", "_")
 
                 db.collection("appointments")
