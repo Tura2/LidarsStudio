@@ -62,7 +62,7 @@ app/
 ## 🚀 Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/<your-username>/LidarsStudio.git
+   git clone https://github.com/Tura2/LidarsStudio.git
    ```
 2. Open in **Android Studio**.
 3. Add your own `google-services.json` from Firebase Console.
