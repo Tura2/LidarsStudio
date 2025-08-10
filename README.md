@@ -97,4 +97,8 @@ app/
 4. Run the project on an emulator or physical device.
 
 
+## 👤 Developer
+**Offir Tura**  
+Afeka College – Mobile Application Development
+
 This project was developed for academic purposes as part of a Mobile Apps course at Afeka College.
