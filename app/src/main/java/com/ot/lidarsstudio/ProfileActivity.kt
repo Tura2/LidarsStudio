@@ -105,7 +105,7 @@ class ProfileActivity : BaseActivity() {
             startActivity(Intent(this, EditProfileActivity::class.java))
         }
     }
-
+// Show the upcoming appointments by default
     private fun showUpcomingAppointment() {
         Log.d("ProfileActivity", "Loading upcoming appointments")
         appointmentContainer.removeAllViews()
@@ -162,7 +162,7 @@ class ProfileActivity : BaseActivity() {
                 }
         }
     }
-
+// Show the appointment history
     private fun showAppointmentHistory() {
         Log.d("ProfileActivity", "Loading appointment history")
         appointmentContainer.removeAllViews()
@@ -218,7 +218,7 @@ class ProfileActivity : BaseActivity() {
                 }
         }
     }
-
+// Cancel or complete an appointment
     private fun cancelAppointment(appt: Appointment) {
         val userId = appt.userId ?: run {
             Log.e("ProfileActivity", "No userId in appointment to cancel")
@@ -257,8 +257,7 @@ class ProfileActivity : BaseActivity() {
             }
     }
 
-    // השאר פונקציות ההבאה ללא שינוי כי הן כבר מחזירות Appointment עם fullName
-
+// Fetch scheduled appointments for the next week
     private fun getScheduledAppointmentsForNextWeek(onResult: (List<Appointment>) -> Unit) {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val calendar = Calendar.getInstance()
@@ -294,7 +293,7 @@ class ProfileActivity : BaseActivity() {
                 onResult(emptyList())
             }
     }
-
+// Fetch completed appointments from the last week
     private fun getCompletedAppointmentsLastWeek(onResult: (List<Appointment>) -> Unit) {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val calendar = Calendar.getInstance()
@@ -317,7 +316,6 @@ class ProfileActivity : BaseActivity() {
                     val appt = doc.toObject(Appointment::class.java)?.copy(
                         id = doc.id,
                         userId = userId
-                        // fullName נטען ישירות דרך toObject
                     )
                     if (appt != null) {
                         appointments.add(appt)

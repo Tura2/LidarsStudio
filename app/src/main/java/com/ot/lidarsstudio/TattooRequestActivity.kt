@@ -104,7 +104,7 @@ class TattooRequestActivity : AppCompatActivity() {
                 }
         }
     }
-
+// Handle the result of image selection
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -125,7 +125,7 @@ class TattooRequestActivity : AppCompatActivity() {
             }
         }
     }
-
+// Add the selected image URI to the container and update the list
     private fun addImageUri(uri: Uri) {
         if (selectedImageUris.contains(uri)) return
         selectedImageUris += uri
@@ -153,7 +153,7 @@ class TattooRequestActivity : AppCompatActivity() {
             }
             .addOnFailureListener(onFailure)
     }
-
+// Upload all selected images and send the request once all uploads are complete
     private fun uploadAllImagesAndSend(
         size: String,
         concept: String,
@@ -183,7 +183,7 @@ class TattooRequestActivity : AppCompatActivity() {
                 })
         }
     }
-
+// Send the tattoo request to the server with the provided details
     private fun sendTattooRequest(
         size: String,
         concept: String,

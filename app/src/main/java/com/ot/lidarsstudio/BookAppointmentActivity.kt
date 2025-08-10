@@ -66,7 +66,7 @@ class BookAppointmentActivity : AppCompatActivity() {
 
         updateAppointmentViews()
     }
-
+// Retrieves the duration for a specific service
     private fun getDurationForService(service: String): Int {
         return when (service) {
             "Regular Gel" -> 60
@@ -75,7 +75,7 @@ class BookAppointmentActivity : AppCompatActivity() {
             else -> 60
         }
     }
-
+// Updates the UI to show confirmed and pending appointments
     private fun updateAppointmentViews() {
         val textConfirmed = findViewById<TextView>(R.id.textActiveAppointmentDetails)
         val textPending = findViewById<TextView>(R.id.textPendingAppointmentDetails)
@@ -129,7 +129,7 @@ class BookAppointmentActivity : AppCompatActivity() {
         dialog.setContentView(view)
         dialog.show()
     }
-
+// Shows a date and time picker in a bottom sheet dialog
     private fun showDateTimePicker() {
         val dialog = BottomSheetDialog(this)
         val view = LayoutInflater.from(this).inflate(R.layout.bottomsheet_select_date_time, null)
@@ -308,7 +308,7 @@ class BookAppointmentActivity : AppCompatActivity() {
                 Toast.makeText(this, "Failed to retrieve user info", Toast.LENGTH_SHORT).show()
             }
     }
-
+// Marks the selected slots as booked in availableAppointments
     private fun removeFromAvailableAppointments(date: String, startHour: String, duration: Int) {
         val fmt = SimpleDateFormat("HH:mm", Locale.getDefault())
         val start = fmt.parse(startHour) ?: return
@@ -359,7 +359,7 @@ class BookAppointmentActivity : AppCompatActivity() {
                     }
             }
     }
-
+// Restores the slots back to available in availableAppointments
     private fun restoreAvailableAppointments(date: String, startHour: String, duration: Int) {
         val fmt = SimpleDateFormat("HH:mm", Locale.getDefault())
         val start = fmt.parse(startHour) ?: return

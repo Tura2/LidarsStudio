@@ -34,7 +34,7 @@
         android:id="@+id/editTextUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="name or phone"
+        android:hint="Email"
         android:background="@drawable/edit_text_background"
         android:padding="16dp"
         android:fontFamily="@font/heebo_regular"

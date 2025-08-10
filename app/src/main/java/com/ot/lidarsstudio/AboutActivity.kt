@@ -17,19 +17,16 @@ class AboutActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
 
-        // 1️⃣ Wire up the drawer (findViewById + header update + menu listener)
+        // Wire up the drawer
         setupDrawer()
 
-        // 2️⃣ Bind only the two buttons you need here
         buttonGoogleMaps = findViewById(R.id.buttonGoogleMaps)
         buttonWaze       = findViewById(R.id.buttonWaze)
 
-        // 3️⃣ Open Google Maps, with fallback to web
         buttonGoogleMaps.setOnClickListener {
-            // your actual address in Hebrew, URI-encoded
-            val address = Uri.encode("שמורת נחל בניאס 7 נתניה")
 
-            // geo URI with query
+
+            val address = Uri.encode("שמורת נחל בניאס 7 נתניה")
             val gmmUri = Uri.parse("geo:0,0?q=$address")
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmUri).apply {
                 setPackage("com.google.android.apps.maps")
@@ -37,7 +34,6 @@ class AboutActivity : BaseActivity() {
             try {
                 startActivity(mapIntent)
             } catch (e: ActivityNotFoundException) {
-                // fallback to browser if Maps app isn’t installed
                 startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
@@ -48,7 +44,6 @@ class AboutActivity : BaseActivity() {
         }
 
         buttonWaze.setOnClickListener {
-            // same encoded address
             val address = Uri.encode("שמורת נחל בניאס 7 נתניה")
 
             // Waze URL

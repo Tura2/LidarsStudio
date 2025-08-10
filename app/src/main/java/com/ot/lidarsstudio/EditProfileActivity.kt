@@ -140,7 +140,6 @@ class EditProfileActivity : AppCompatActivity() {
                 userDoc.update(updates).addOnSuccessListener {
                     Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
 
-                    // אם ה־userDocId השתנה, מעבירים תורים מישן לחדש
                     if (oldUserDocId != newUserDocId) {
                         val oldAppointmentsRef = db.collection("appointments").document(oldUserDocId).collection("userAppointments")
                         val newAppointmentsRef = db.collection("appointments").document(newUserDocId).collection("userAppointments")
@@ -167,7 +166,6 @@ class EditProfileActivity : AppCompatActivity() {
                             finish()
                         }
                     } else {
-                        // אם אין שינוי ב־userDocId, רק סוגרים
                         finish()
                     }
                 }.addOnFailureListener { e ->

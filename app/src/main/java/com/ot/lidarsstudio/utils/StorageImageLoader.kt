@@ -20,7 +20,7 @@ object StorageImageLoader {
                 .load(uri)
                 .into(imageView)
         }.addOnFailureListener {
-            // Optional: handle error or show placeholder
+            // can add error handling here if needed
         }
     }
 
@@ -38,7 +38,7 @@ object StorageImageLoader {
                     override fun onLoadCleared(placeholder: Drawable?) {}
                 })
         }.addOnFailureListener {
-            // Optional: handle error
+            // can add error handling here if needed
         }
     }
 }

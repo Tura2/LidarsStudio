@@ -19,7 +19,7 @@ import java.time.ZoneId
 import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
-
+//nav drawer setup for all activities
     private val TAG = "BaseActivity"
 
     protected lateinit var drawerLayout: DrawerLayout
@@ -37,7 +37,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
         updateGreetingHeader()
-
+ // Set up the navigation view
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home      -> if (this !is HomeActivity) startActivity(Intent(this, HomeActivity::class.java))
@@ -55,7 +55,7 @@ abstract class BaseActivity : AppCompatActivity() {
             true
         }
     }
-
+// Update the greeting header with server time and user name
     private fun updateGreetingHeader() {
         val header = navView.getHeaderView(0)
         val tvGreeting = header.findViewById<TextView>(R.id.textGreeting)
@@ -85,7 +85,7 @@ abstract class BaseActivity : AppCompatActivity() {
             else      -> "Good Evening,"
         }
     }
-
+// Fetch the server time using Firebase Functions
     private fun getServerTime(onResult: (Long) -> Unit) {
         Firebase.functions
             .getHttpsCallable("getServerTime")

@@ -43,7 +43,7 @@ class SplashActivity : AppCompatActivity() {
         startActivity(Intent(this, next))
         finish()
     }
-
+// Fetch server time via HTTP request
     private fun getServerTime(onResult: (Long) -> Unit) {
         val url = "https://getservertime-fhvdk4ir7a-uc.a.run.app"
         val request = Request.Builder().url(url).build()
@@ -83,7 +83,11 @@ class SplashActivity : AppCompatActivity() {
             }
         })
     }
-
+// Clean up old appointment slots
+    // This function removes slots that are older than today or past slots for today
+    // It uses the server time to ensure consistency across different devices
+    // It also removes entire documents if they have no slots left after cleanup
+    // This is run on app startup to keep the database clean
     private fun cleanOldSlots(onComplete: () -> Unit) {
         Log.d(TAG, "Starting cleanOldSlots")
         getServerTime { serverNowMs ->
