@@ -44,6 +44,8 @@ Managers can approve/decline bookings, manage availability, and update the galle
 - **Role-based navigation** – Different flows for customers and managers
 - **Smart availability management** – Add/block time slots, auto-remove taken slots
 - **Server Time Synchronization** – All bookings use `serverTimestamp` for accurate timing
+- **Bottom Sheet Dialogs** – For booking and gallery image selection
+- **Lottie Animations** – For loading and status screens
 - **Firebase Functions** – Automatic email sent to manager when a tattoo request is submitted
 - **Glide Image Loading** – Efficient image loading with caching and placeholders
 - **Material Design** – Modern UI components for a polished look
@@ -63,10 +65,12 @@ Managers can approve/decline bookings, manage availability, and update the galle
 
 ---
 
-## 🚀 Possible Issues
-- No internet – booking or gallery loading may fail
-- Slot already taken – blocked server-side with an error message
-- Wrong login details – Firebase Auth error displayed
+## 🧩 Potential Issues & Known Limitations
+- **Network dependency** – Since all data is stored in Firebase, lack of internet connection prevents booking or viewing updates.
+- **Simultaneous bookings** – If two customers try to book the same slot simultaneously, only the first request processed by Firestore will succeed.
+- **Crash risk on malformed Firestore data** – If a document is missing required fields (e.g., `service` or `date`), certain adapters may throw exceptions.
+- **Gallery loading delay** – Large images or slow connections may cause longer loading times despite Glide optimizations.
+- **Email notifications** – Relies on Firebase Functions; if these fail (e.g., due to quota limits), managers may not get tattoo request emails.
 
 ---
 
